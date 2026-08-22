@@ -1,0 +1,76 @@
+@import './variables.scss';
+@import './navbar';
+@import './hero';
+@import './about';
+@import './services';
+@import './projects';
+@import './team';
+@import './pages';
+@import './contact';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: $font-family;
+  background: $background-light;
+  color: $text-dark;
+  line-height: 1.6;
+}
+
+.app {
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding: $spacing-md $spacing-lg $spacing-xl;
+}
+
+section {
+  padding: $spacing-xl 0;
+  scroll-margin-top: 80px;
+  
+  &:first-of-type {
+    padding-top: 0;
+  }
+}
+
+.section-title {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: $text-dark;
+  margin-bottom: $spacing-lg;
+  text-align: center;
+  
+  span {
+    color: $primary-color;
+  }
+  
+  i {
+    color: $primary-color;
+    margin-right: $spacing-xs;
+  }
+}
+
+.section-subtitle {
+  text-align: center;
+  color: $text-muted;
+  max-width: 600px;
+  margin: -$spacing-sm auto $spacing-xl;
+  font-size: $font-size-md;
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .app {
+    padding: $spacing-sm;
+  }
+  
+  section {
+    padding: $spacing-lg 0;
+  }
+}

@@ -1,0 +1,94 @@
+@import './variables';
+
+.team {
+  padding: $spacing-xl 0;
+  background: $background-light;
+
+  &-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: $spacing-lg;
+    margin-top: $spacing-xl;
+  }
+
+  .team-card {
+    background: $background-white;
+    padding: $spacing-lg;
+    border-radius: $radius-md;
+    text-align: center;
+    box-shadow: $card-shadow;
+    border: 1px solid $border-color;
+    transition: all $transition-medium;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.1);
+    }
+
+    .team-avatar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100px;
+      height: 100px;
+      background: rgba($primary-color, 0.08);
+      border-radius: 50%;
+      margin-bottom: $spacing-md;
+
+      i {
+        font-size: 4rem;
+        color: $primary-color;
+        opacity: 0.8;
+      }
+    }
+
+    h3 {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-semibold;
+      color: $secondary-color;
+      margin-bottom: $spacing-xs;
+    }
+
+    .team-role {
+      color: $primary-color;
+      font-weight: $font-weight-medium;
+      font-size: $font-size-sm;
+      margin-bottom: $spacing-xs;
+    }
+
+    .team-experience {
+      color: $text-muted;
+      font-size: $font-size-sm;
+      margin-bottom: $spacing-md;
+
+      i {
+        margin-right: $spacing-xs;
+      }
+    }
+
+    .team-social {
+      display: flex;
+      justify-content: center;
+      gap: $spacing-sm;
+
+      .social-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: $background-light;
+        color: $text-muted;
+        transition: all $transition-fast;
+        text-decoration: none;
+
+        &:hover {
+          background: $primary-color;
+          color: white;
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,126 @@
+@import './variables';
+
+.about {
+  padding: $spacing-xl 0;
+
+  &-container {
+    display: flex;
+    gap: $spacing-xl;
+    align-items: center;
+  }
+
+  &-image {
+    flex: 1;
+
+    &-placeholder {
+      background: linear-gradient(145deg, $secondary-color, $secondary-light);
+      border-radius: $radius-lg;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: $card-shadow;
+
+      i {
+        font-size: 6rem;
+        color: rgba(white, 0.2);
+      }
+    }
+  }
+
+  &-content {
+    flex: 1;
+
+    .about-tag {
+      display: inline-block;
+      background: rgba($primary-color, 0.1);
+      color: $primary-color;
+      padding: $spacing-xs $spacing-md;
+      border-radius: $radius-full;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
+      margin-bottom: $spacing-sm;
+    }
+
+    h2 {
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-bold;
+      color: $secondary-color;
+      margin-bottom: $spacing-md;
+
+      span {
+        color: $primary-color;
+      }
+    }
+
+    > p {
+      color: $text-muted;
+      line-height: 1.8;
+      margin-bottom: $spacing-lg;
+    }
+
+    .about-features {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-md;
+      margin-bottom: $spacing-lg;
+
+      .feature {
+        display: flex;
+        gap: $spacing-md;
+        align-items: flex-start;
+
+        i {
+          color: $primary-color;
+          font-size: $font-size-xl;
+          margin-top: 2px;
+        }
+
+        h4 {
+          font-size: $font-size-md;
+          font-weight: $font-weight-semibold;
+          color: $secondary-color;
+          margin-bottom: 2px;
+        }
+
+        p {
+          font-size: $font-size-sm;
+          color: $text-muted;
+        }
+      }
+    }
+
+    .btn-primary {
+      background: $primary-color;
+      color: white;
+      border: none;
+      padding: $spacing-sm $spacing-xl;
+      border-radius: $radius-full;
+      font-family: $font-family;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
+      cursor: pointer;
+      transition: all $transition-fast;
+      display: inline-flex;
+      align-items: center;
+      gap: $spacing-xs;
+
+      &:hover {
+        background: $primary-dark;
+        transform: translateX(4px);
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .about {
+    &-container {
+      flex-direction: column;
+    }
+
+    &-image-placeholder {
+      min-height: 250px;
+    }
+  }
+}

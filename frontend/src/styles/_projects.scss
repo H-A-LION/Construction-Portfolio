@@ -1,0 +1,108 @@
+@import './variables';
+
+.projects {
+  padding: $spacing-xl 0;
+
+  &-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: $spacing-lg;
+    margin-top: $spacing-xl;
+  }
+
+  .project-card {
+    background: $background-white;
+    border-radius: $radius-md;
+    overflow: hidden;
+    box-shadow: $card-shadow;
+    border: 1px solid $border-color;
+    transition: all $transition-medium;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.12);
+    }
+
+    .project-image-placeholder {
+      height: 200px;
+      background: linear-gradient(145deg, $secondary-color, $secondary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      i {
+        font-size: 4rem;
+        color: rgba(white, 0.15);
+      }
+    }
+
+    .project-info {
+      padding: $spacing-md;
+
+      .project-category {
+        display: inline-block;
+        background: rgba($primary-color, 0.1);
+        color: $primary-color;
+        padding: 2px $spacing-sm;
+        border-radius: $radius-full;
+        font-size: $font-size-xs;
+        font-weight: $font-weight-semibold;
+        margin-bottom: $spacing-xs;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      h3 {
+        font-size: $font-size-lg;
+        font-weight: $font-weight-semibold;
+        color: $secondary-color;
+        margin-bottom: $spacing-xs;
+      }
+
+      .project-location {
+        color: $text-muted;
+        font-size: $font-size-sm;
+        margin-bottom: $spacing-sm;
+
+        i {
+          margin-right: $spacing-xs;
+        }
+      }
+
+      .project-tags {
+        display: flex;
+        gap: $spacing-xs;
+        margin-bottom: $spacing-md;
+        flex-wrap: wrap;
+
+        .tag {
+          background: $background-light;
+          padding: 2px $spacing-sm;
+          border-radius: $radius-full;
+          font-size: $font-size-xs;
+          color: $text-muted;
+          font-weight: $font-weight-medium;
+        }
+      }
+
+      .project-link {
+        background: none;
+        border: none;
+        color: $primary-color;
+        font-weight: $font-weight-semibold;
+        cursor: pointer;
+        font-family: $font-family;
+        font-size: $font-size-sm;
+        display: inline-flex;
+        align-items: center;
+        gap: $spacing-xs;
+        transition: all $transition-fast;
+
+        &:hover {
+          gap: $spacing-sm;
+          color: $primary-dark;
+        }
+      }
+    }
+  }
+}

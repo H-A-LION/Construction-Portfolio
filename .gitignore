@@ -1,0 +1,11 @@
+#frontend
+/frontend/node_modules
+
+#Admin frontend
+/admin-frontend/node_modules
+
+#backend
+/backend/.env
+/backend/.htaccess
+/backend/config
+/backend/migrations
