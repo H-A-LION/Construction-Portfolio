@@ -1,6 +1,6 @@
-// src/pages/Login.jsx
+// admin-frontend/src/pages/Login.jsx
 import React, { useState } from 'react';
-
+import { login } from '../api/contentApi';
 
 const Login = ({ onLogin }) => {
   const [credentials, setCredentials] = useState({
@@ -16,17 +16,10 @@ const Login = ({ onLogin }) => {
     setLoading(true);
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Demo credentials
-      if (credentials.email === 'admin@buildport.com' && credentials.password === 'admin123') {
-        onLogin();
-      } else {
-        setError('Invalid email or password');
-      }
+      await login(credentials.email, credentials.password);
+      onLogin();
     } catch (err) {
-      setError('Login failed. Please try again.');
+      setError(err.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -87,14 +80,6 @@ const Login = ({ onLogin }) => {
                 placeholder="Enter your password"
                 required
               />
-            </div>
-
-            <div className="login-options">
-              <label className="remember-me">
-                <input type="checkbox" />
-                Remember me
-              </label>
-              <a href="#" className="forgot-password">Forgot password?</a>
             </div>
 
             <button type="submit" className="login-btn" disabled={loading}>

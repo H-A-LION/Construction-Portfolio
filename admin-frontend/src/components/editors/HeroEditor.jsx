@@ -6,7 +6,6 @@ import StatEditor from '../common/StatEditor';
 
 const HeroEditor = ({ data, onChange }) => {
   const [formData, setFormData] = useState(data);
-
   const handleChange = (field, value) => {
     const updated = { ...formData, [field]: value };
     setFormData(updated);
