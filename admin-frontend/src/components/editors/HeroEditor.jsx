@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import InputField from '../common/InputField';
 import TextAreaField from '../common/TextAreaField';
-import StatEditor from '../common/StatEditor';
+import StatEditor from '../common/StateEditor';
 
 const HeroEditor = ({ data, onChange }) => {
   const [formData, setFormData] = useState(data);

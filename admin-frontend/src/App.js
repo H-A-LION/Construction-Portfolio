@@ -18,9 +18,9 @@ function App() {
     setShowAdmin(false);
   };
 
-  if (!isAuthenticated) {
-    return <Login onLogin={handleLogin} />;
-  }
+  // if (!isAuthenticated) {
+  //   return <Login onLogin={handleLogin} />;
+  // }
 
   return <Dashboard onLogout={handleLogout} />;
 }
