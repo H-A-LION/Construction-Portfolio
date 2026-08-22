@@ -1,22 +1,32 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
+import { fetchHeroContent } from '../api/contentApi';
 
 const Hero = () => {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadContent = async () => {
+      const data = await fetchHeroContent();
+      setContent(data);
+      setLoading(false);
+    };
+    loadContent();
+  }, []);
+
+  if (loading) {
+    return <div className="hero-loading">Loading...</div>;
+  }
   return (
     <section className="hero">
       <div className="hero-container">
         <div className="hero-content">
           <div className="hero-badge">
             <i className="fas fa-trophy"></i>
-            <span>2026 Award Winner</span>
+            <span>{content.badge}</span>
           </div>
-          <h1>
-            Built with <span>precision</span> <br />
-            &amp; integrity
-          </h1>
-          <p>
-            From concept to completion — we deliver commercial, residential, 
-            and industrial projects that stand the test of time.
-          </p>
+          <h1 dangerouslySetInnerHTML={{ __html: content.title }} />
+          <p>{content.description}</p>
           <div className="hero-actions">
             <button className="btn-primary">
               <i className="fas fa-arrow-right"></i> View Portfolio
