@@ -36,18 +36,12 @@ const Hero = () => {
             </button>
           </div>
           <div className="hero-stats">
-            <div className="stat">
-              <span className="stat-number">120+</span>
-              <span className="stat-label">Projects Completed</span>
+            {content.stats.map((stat, index) => (
+            <div key={index} className="stat">
+              <span className="stat-number">{stat.number}+</span>
+              <span className="stat-label">{stat.label}</span>
             </div>
-            <div className="stat">
-              <span className="stat-number">98%</span>
-              <span className="stat-label">Client Satisfaction</span>
-            </div>
-            <div className="stat">
-              <span className="stat-number">15+</span>
-              <span className="stat-label">Years Experience</span>
-            </div>
+            ))}
           </div>
         </div>
         <div className="hero-image">
