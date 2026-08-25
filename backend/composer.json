@@ -20,6 +20,8 @@
     },
     "scripts": {
         "migrate": "php scripts/migrate.php",
-        "seed": "php scripts/seed.php"
+        "seed": "php scripts/seed.php",
+        "start":"php -S localhost:8000",
+        "test":"phpunit"
     }
 }
