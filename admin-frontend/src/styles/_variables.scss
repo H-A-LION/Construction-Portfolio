@@ -1,0 +1,65 @@
+// ========================================
+// Admin Theme Colors
+// ========================================
+
+// Primary / Accent
+$color-primary: #f59e0b;
+$color-primary-hover: #fbbf24;
+$color-primary-transparent: rgba(245, 158, 11, 0.1);
+$color-primary-focus-shadow: rgba(245, 158, 11, 0.1);
+$color-primary-button-shadow: rgba(245, 158, 11, 0.3);
+
+// Dark
+// $color-dark: #1a1a2e;
+// $color-dark-secondary: #16213e;
+// $color-dark-hover: #2d2d44;
+$color-dark: #c4452b;
+$color-dark-secondary: #16213e;
+$color-dark-hover: #2d2d44;
+
+// White
+$color-white: #000000;
+$color-white-05: rgba(255, 255, 255, 0.05);
+$color-white-10: rgba(255, 255, 255, 0.1);
+$color-white-30: rgba(255, 255, 255, 0.3);
+$color-white-40: rgba(255, 255, 255, 0.4);
+$color-white-60: rgba(255, 255, 255, 0.6);
+$color-white-80: rgba(255, 255, 255, 0.8);
+
+// Backgrounds
+$color-background: #f8fafc;
+$color-background-light: #fff;
+$color-background-muted: #f9fafb;
+
+// Borders
+$color-border: #e2e8f0;
+$color-border-light: #e5e7eb;
+$color-border-input: #d1d5db;
+$color-border-section: #f3f4f6;
+
+// Text
+$color-text-dark: #1a1a2e;
+$color-text: #374151;
+$color-text-muted: #6b7280;
+
+// Success
+$color-success: #10b981;
+$color-success-hover: #059669;
+
+// Error / Danger
+$color-error: #ef4444;
+$color-error-background: rgba(239, 68, 68, 0.1);
+$color-error-border: rgba(239, 68, 68, 0.3);
+
+// Remove button
+$remove-button-color: #ef4444;
+$remove-button-background: #fee2e2;
+$remove-button-background-hover: #febbbb;
+
+// Shadows
+$shadow-dark: rgba(0, 0, 0, 0.5);
+$shadow-light: rgba(0, 0, 0, 0.05);
+$shadow-button: rgba(26, 26, 46, 0.2);
+
+
+$color-logout: rgba(255, 0, 0, 0.4);

@@ -1,0 +1,173 @@
+// Login Styles
+.admin-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    $color-dark 0%,
+    $color-dark-secondary 100%
+  );
+
+  .login-container {
+    width: 100%;
+    max-width: 440px;
+    padding: 20px;
+  }
+
+  .login-card {
+    background: $color-white-05;
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    border: 1px solid $color-white-10;
+    box-shadow: 0 20px 60px $shadow-dark;
+  }
+
+  .login-header {
+    text-align: center;
+    margin-bottom: 40px;
+
+    .login-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 12px;
+
+      i {
+        font-size: 32px;
+        color: $color-primary;
+      }
+
+      h1 {
+        color: $color-white;
+        font-size: 28px;
+        font-weight: 700;
+        margin: 0;
+      }
+    }
+
+    p {
+      color: $color-white-60;
+      font-size: 16px;
+    }
+  }
+
+  .login-form {
+    .form-group {
+      margin-bottom: 24px;
+
+      label {
+        display: block;
+        color: $color-white-80;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 8px;
+
+        i {
+          margin-right: 8px;
+          color: $color-primary;
+        }
+      }
+
+      input {
+        width: 100%;
+        padding: 12px 16px;
+        background: $color-white-05;
+        border: 1px solid $color-white-10;
+        border-radius: 10px;
+        color: $color-white;
+        font-size: 16px;
+        transition: all 0.3s;
+
+        &:focus {
+          outline: none;
+          border-color: $color-primary;
+          box-shadow: 0 0 0 3px $color-primary-focus-shadow;
+        }
+
+        &::placeholder {
+          color: $color-white-30;
+        }
+      }
+    }
+  }
+
+  .login-error {
+    background: $color-error-background;
+    border: 1px solid $color-error-border;
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: $color-error;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .remember-me {
+      color: $color-white-60;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+
+      input[type="checkbox"] {
+        accent-color: $color-primary;
+      }
+    }
+
+    .forgot-password {
+      color: $color-primary;
+      text-decoration: none;
+      font-size: 14px;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .login-btn {
+    width: 100%;
+    padding: 14px;
+    background: $color-primary;
+    border: none;
+    border-radius: 10px;
+    color: $color-dark;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+      background: $color-primary-hover;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px $color-primary-button-shadow;
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+
+  .login-footer {
+    margin-top: 24px;
+    text-align: center;
+
+    p {
+      color: $color-white-30;
+      font-size: 13px;
+    }
+  }
+}

@@ -1,6 +1,7 @@
 // src/admin/components/common/StatEditor.jsx
 import React from 'react';
 import InputField from './InputField';
+import { TiDeleteOutline } from "react-icons/ti";
 
 const StatEditor = ({ index, stat, onChange, onRemove }) => {
   return (
@@ -20,7 +21,7 @@ const StatEditor = ({ index, stat, onChange, onRemove }) => {
         />
       </div>
       <button type="button" onClick={onRemove} className="remove-btn">
-        <i className="fas fa-times"></i>
+        <TiDeleteOutline />
       </button>
     </div>
   );

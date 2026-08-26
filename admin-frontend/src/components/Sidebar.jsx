@@ -1,5 +1,6 @@
 // src/admin/components/Sidebar.jsx
 import React from 'react';
+import { GoSignOut } from "react-icons/go";
 
 const Sidebar = ({ sections, activeSection, onSectionChange, onLogout }) => {
   return (
@@ -27,7 +28,7 @@ const Sidebar = ({ sections, activeSection, onSectionChange, onLogout }) => {
 
       <div className="sidebar-footer">
         <button className="sidebar-item logout" onClick={onLogout}>
-          <i className="fas fa-sign-out-alt"></i>
+          <GoSignOut />
           <span>Logout</span>
         </button>
       </div>
