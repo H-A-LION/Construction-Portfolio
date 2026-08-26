@@ -11,13 +11,8 @@ class Database {
     private $config;
 
     private function __construct() {
-        $this->config = [
-            'host' => $_ENV['DB_HOST'] ?? 'localhost',
-            'port' => $_ENV['DB_PORT'] ?? '3306',
-            'dbname' => $_ENV['DB_NAME'],
-            'user' => $_ENV['DB_USER'],
-            'password' => $_ENV['DB_PASSWORD']
-        ];
+        $config = require __DIR__ . '/../../config/database.php';
+        $this->config = $config;
         
         $this->connect();
     }
@@ -32,7 +27,7 @@ class Database {
     private function connect() {
         try {
             $dsn = "mysql:host={$this->config['host']};port={$this->config['port']};dbname={$this->config['dbname']};charset=utf8mb4";
-            $this->connection = new PDO($dsn, $this->config['user'], $this->config['password'], [
+            $this->connection = new PDO($dsn, $this->config['username'], $this->config['password'], [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES => false

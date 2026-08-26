@@ -9,3 +9,8 @@
 /backend/.htaccess
 /backend/config
 /backend/migrations
+/backend/vendor/
+/backend/composer.lock
+
+
+notes.txt
