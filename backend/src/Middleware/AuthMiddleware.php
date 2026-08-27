@@ -19,6 +19,7 @@ class AuthMiddleware {
         // Check for Authorization header
         if (!isset($headers['Authorization'])) {
             Response::unauthorized('Authorization header missing');
+            return false;
         }
 
         $authHeader = $headers['Authorization'];
@@ -26,6 +27,7 @@ class AuthMiddleware {
         // Check if it's a Bearer token
         if (strpos($authHeader, 'Bearer ') !== 0) {
             Response::unauthorized('Invalid authorization format');
+            return false;
         }
 
         $token = substr($authHeader, 7);
@@ -33,17 +35,25 @@ class AuthMiddleware {
         
         if (!$decoded) {
             Response::unauthorized('Invalid or expired token');
+            return false;
         }
 
         // Get user from database
         $user = User::find($decoded->sub);
-        if (!$user || !$user['is_active']) {
-            Response::unauthorized('User not found or inactive');
+        if (!$user) {
+            Response::unauthorized('User not found');
+            return false;
+        }
+        
+        if (!$user['is_active']) {
+            Response::unauthorized('User account is inactive');
+            return false;
         }
 
         // Check roles if required
         if ($requiredRoles && !in_array($user['role'], (array) $requiredRoles)) {
             Response::forbidden('Insufficient permissions');
+            return false;
         }
 
         // Store user in request context

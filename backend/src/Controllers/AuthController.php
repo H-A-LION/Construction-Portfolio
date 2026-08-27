@@ -102,7 +102,6 @@ class AuthController {
     }
 
     public function logout() {
-        // Client-side token removal, server just acknowledges
         return Response::success(null, 'Logged out successfully');
     }
 
@@ -119,6 +118,11 @@ class AuthController {
             $updateData['name'] = $input['name'];
         }
         if (isset($input['email'])) {
+            // Check if email is taken by another user
+            $existing = User::findByEmail($input['email']);
+            if ($existing && $existing['id'] != $user['id']) {
+                return Response::error('Email already taken', 400);
+            }
             $updateData['email'] = $input['email'];
         }
         if (isset($input['password']) && !empty($input['password'])) {

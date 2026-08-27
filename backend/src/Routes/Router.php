@@ -2,6 +2,8 @@
 // src/Routes/Router.php
 namespace App\Routes;
 
+use App\Middleware\AuthMiddleware;
+
 class Router {
     private $routes = [];
     private $method;
@@ -57,6 +59,26 @@ class Router {
             if (preg_match($pattern, $this->path, $matches)) {
                 array_shift($matches);
                 $this->params = $matches;
+                
+                // Check if route needs authentication (all except login/register)
+                $isPublic = in_array($route['route'], [
+                    '/api/v1/auth/login',
+                    '/api/v1/auth/register',
+                    '/api/v1/content/hero'
+                ]);
+                
+                // For public content routes that are GET
+                if (strpos($route['route'], '/api/v1/content/') === 0 && $route['method'] === 'GET') {
+                    $isPublic = true;
+                }
+                
+                if (!$isPublic) {
+                    $auth = new AuthMiddleware();
+                    $user = $auth->authenticate();
+                    if (!$user) {
+                        return;
+                    }
+                }
                 
                 // Call callback with parameters
                 if (is_callable($route['callback'])) {

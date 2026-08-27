@@ -13,7 +13,6 @@ class Database {
     private function __construct() {
         $config = require __DIR__ . '/../../config/database.php';
         $this->config = $config;
-        
         $this->connect();
     }
 
@@ -26,7 +25,7 @@ class Database {
 
     private function connect() {
         try {
-            $dsn = "mysql:host={$this->config['host']};port={$this->config['port']};dbname={$this->config['dbname']};charset=utf8mb4";
+            $dsn = "mysql:host={$this->config['host']};port={$this->config['port']};dbname={$this->config['database']};charset=utf8mb4";
             $this->connection = new PDO($dsn, $this->config['username'], $this->config['password'], [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
