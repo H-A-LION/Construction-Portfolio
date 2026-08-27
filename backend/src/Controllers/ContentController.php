@@ -100,3 +100,47 @@ class ContentController {
         ], "Reverted to version {$version}");
     }
 }
+
+// backend/src/Controllers/ContentController.php
+public function updateHeroImage($request) {
+    try {
+        $userId = $request['user_id'];
+        $file = $_FILES['hero_image'];
+        
+        // Validate image
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+        if (!in_array($file['type'], $allowedTypes)) {
+            return Response::json(['error' => 'Invalid image type'], 400);
+        }
+        
+        $maxSize = 5 * 1024 * 1024; // 5MB
+        if ($file['size'] > $maxSize) {
+            return Response::json(['error' => 'Image too large'], 400);
+        }
+        
+        // Generate unique filename
+        $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $filename = 'hero_' . time() . '.' . $extension;
+        $uploadPath = __DIR__ . '/../../uploads/hero/';
+        
+        if (!is_dir($uploadPath)) {
+            mkdir($uploadPath, 0777, true);
+        }
+        
+        // Move file
+        if (move_uploaded_file($file['tmp_name'], $uploadPath . $filename)) {
+            $db = Database::getInstance();
+            $stmt = $db->prepare("UPDATE content SET hero_image = ? WHERE id = 1");
+            $stmt->execute(['/uploads/hero/' . $filename]);
+            
+            return Response::json([
+                'success' => true,
+                'path' => '/uploads/hero/' . $filename
+            ]);
+        }
+        
+        return Response::json(['error' => 'Upload failed'], 500);
+    } catch (Exception $e) {
+        return Response::json(['error' => $e->getMessage()], 500);
+    }
+}

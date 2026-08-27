@@ -1,4 +1,5 @@
-import React,{useEffect,useState} from 'react';
+// frontend/src/components/Hero.jsx
+import React, { useEffect, useState } from 'react';
 import { fetchHeroContent } from '../api/contentApi';
 
 const Hero = () => {
@@ -7,9 +8,14 @@ const Hero = () => {
 
   useEffect(() => {
     const loadContent = async () => {
-      const data = await fetchHeroContent();
-      setContent(data);
-      setLoading(false);
+      try {
+        const data = await fetchHeroContent();
+        setContent(data);
+      } catch (error) {
+        console.error('Error loading hero content:', error);
+      } finally {
+        setLoading(false);
+      }
     };
     loadContent();
   }, []);
@@ -17,8 +23,21 @@ const Hero = () => {
   if (loading) {
     return <div className="hero-loading">Loading...</div>;
   }
+
+  // Hero background style with image
+  const heroStyle = content?.hero_image ? {
+    backgroundImage: `url(${process.env.REACT_APP_API_URL}${content.hero_image})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundAttachment: 'fixed',
+    minHeight: '100vh',
+    position: 'relative'
+  } : {};
+
   return (
-    <section className="hero">
+    <section className="hero" style={heroStyle}>
+      {/* Dark overlay for text readability */}
+      <div className="hero-overlay" />
       <div className="hero-container">
         <div className="hero-content">
           <div className="hero-badge">
@@ -36,19 +55,12 @@ const Hero = () => {
             </button>
           </div>
           <div className="hero-stats">
-            {content.stats.map((stat, index) => (
-            <div key={index} className="stat">
-              <span className="stat-number">{stat.number}+</span>
-              <span className="stat-label">{stat.label}</span>
-            </div>
+            {content.stats?.map((stat, index) => (
+              <div key={index} className="stat">
+                <span className="stat-number">{stat.number}+</span>
+                <span className="stat-label">{stat.label}</span>
+              </div>
             ))}
-          </div>
-        </div>
-        <div className="hero-image">
-          <div className="hero-image-placeholder">
-            <i className="fas fa-drafting-compass"></i>
-            <p>Construction · Engineering</p>
-            <small>Building the future, today</small>
           </div>
         </div>
       </div>
