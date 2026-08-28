@@ -16,8 +16,13 @@ if ($_ENV['APP_DEBUG'] ?? false) {
 }
 
 // CORS
-header('Access-Control-Allow-Origin: ' . ($_ENV['CORS_ORIGIN'] ?? '*'));
-header('Access-Control-Allow-Credentials: true');
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+
+if (preg_match('/^http:\/\/localhost:\d+$/', $origin)) {
+    header("Access-Control-Allow-Origin: ".($_ENV['CORS_ORIGIN'] ?? "*"));
+    header('Access-Control-Allow-Credentials: true');
+}
+// header('Access-Control-Allow-Origin: ' . ($_ENV['CORS_ORIGIN'] ?? '*'));
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
 

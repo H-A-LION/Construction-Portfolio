@@ -18,3 +18,6 @@ npm start
 
 # open cli mysql
 sudo  mysql -u mysqluser -p
+
+# Update remote origin
+git remote set-url origin https://github.com/Husyn0/Construction-Portfolio.git

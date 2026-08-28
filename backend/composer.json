@@ -21,7 +21,7 @@
     "scripts": {
         "migrate": "php scripts/migrate.php",
         "seed": "php scripts/seed.php",
-        "start":"php -S localhost:8000",
+        "start":"php -S localhost:8000 index.php",
         "test":"phpunit"
     }
 }

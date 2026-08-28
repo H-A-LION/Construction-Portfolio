@@ -3,7 +3,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/v1';
 
 export const fetchHeroContent = async () => {
   try {
-    const response = await fetch(`${API_URL}/content/hero`);
+    const response = await fetch(`${API_URL}/content/hero`);////////////////////////////////
     if (!response.ok) throw new Error('Failed to fetch hero content');
     const result = await response.json();
     return result.data;

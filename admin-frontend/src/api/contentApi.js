@@ -10,7 +10,7 @@ const headers = () => ({
 
 export const fetchContent = async (section) => {
   try {
-    const response = await fetch(`${API_URL}/content/${section}`, {
+    const response = await fetch(`${API_URL}/content/${section}`, {//////////////////////////////////////
       headers: headers()
     });
     
@@ -21,14 +21,14 @@ export const fetchContent = async (section) => {
     const result = await response.json();
     return result.data;
   } catch (error) {
-    console.error('Error fetching content:', error);
+    console.error('Error fetching content:', error);///////////////////////////////////////////
     throw error;
   }
 };
 
 export const saveContent = async (section, data) => {
   try {
-    const response = await fetch(`${API_URL}/content/${section}`, {
+    const response = await fetch(`${API_URL}/content/${section}`, {////////////////////////////////////////////////
       method: 'PUT',
       headers: headers(),
       body: JSON.stringify({ data })
@@ -41,7 +41,7 @@ export const saveContent = async (section, data) => {
     const result = await response.json();
     return result.data;
   } catch (error) {
-    console.error('Error saving content:', error);
+    console.error('Error saving content:', error);///////////////////////////////////////////////
     throw error;
   }
 };

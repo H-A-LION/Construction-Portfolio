@@ -1,10 +1,30 @@
 // src/admin/components/editors/AboutEditor.jsx
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import InputField from '../common/InputField';
 import TextAreaField from '../common/TextAreaField';
+import { FaTrash, FaPlus } from "react-icons/fa";
 
 const AboutEditor = ({ data, onChange }) => {
-  const [formData, setFormData] = useState(data);
+    // Initialize with default values to prevent undefined errors
+  const defaultData = {
+    tag: '',
+    title: '',
+    description: '',
+    features: []
+  };
+
+  const [formData, setFormData] = useState({...defaultData, ...data});
+
+    // Update formData when data prop changes
+  useEffect(() => {
+    if (data) {
+      setFormData(prev => ({
+        ...defaultData,
+        ...data,
+        features: data.features || []
+      }));
+    }
+  }, [data]);
 
   const handleChange = (field, value) => {
     const updated = { ...formData, [field]: value };
@@ -28,7 +48,8 @@ const AboutEditor = ({ data, onChange }) => {
   };
 
   const removeFeature = (index) => {
-    const updatedFeatures = formData.features.filter((_, i) => i !== index);
+    const currentFeatures = formData.features || [];
+    const updatedFeatures = currentFeatures.filter((_, i) => i !== index);
     const updated = { ...formData, features: updatedFeatures };
     setFormData(updated);
     onChange(updated);
@@ -65,7 +86,7 @@ const AboutEditor = ({ data, onChange }) => {
           <div className="features-header">
             <label>Features</label>
             <button type="button" onClick={addFeature} className="add-btn">
-              <i className="fas fa-plus"></i> Add Feature
+              <FaPlus /> Add Feature
             </button>
           </div>
           
@@ -90,7 +111,7 @@ const AboutEditor = ({ data, onChange }) => {
                 onClick={() => removeFeature(index)}
                 className="remove-btn"
               >
-                <i className="fas fa-trash"></i>
+                <FaTrash />
               </button>
             </div>
           ))}

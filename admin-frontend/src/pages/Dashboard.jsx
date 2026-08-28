@@ -11,30 +11,6 @@ const Dashboard = ({ onLogout }) => {
   const [saveMessage, setSaveMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch content when section changes
-  useEffect(() => {
-    const loadContent = async () => {
-      setIsLoading(true);
-      try {
-        const data = await fetchContent(activeSection);
-        setContent(prev => ({
-          ...prev,
-          [activeSection]: data
-        }));
-      } catch (error) {
-        console.error('Error loading content:', error);
-        // Set default content if API fails
-        setContent(prev => ({
-          ...prev,
-          [activeSection]: getDefaultContent(activeSection)
-        }));
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    loadContent();
-  }, [activeSection]);
-
   const getDefaultContent = (section) => {
     const defaults = {
       hero: {
@@ -67,6 +43,34 @@ const Dashboard = ({ onLogout }) => {
     };
     return defaults[section] || {};
   };
+
+    // Fetch content when section changes
+  useEffect(() => {
+    const loadContent = async () => {
+      setIsLoading(true);
+      try {
+        const data = await fetchContent(activeSection);
+        setContent(prev => ({
+          ...prev,
+          [activeSection]: data
+        }));
+      } catch (error) {
+        console.error('Error loading content:', error);///////////////////////////////////////////////////////
+        // Set default content if API fails
+        setContent(prev => ({
+          ...prev,
+          [activeSection]: getDefaultContent(activeSection)
+        }));
+
+        setSaveMessage('⚠️ Using default content - API connection issue');
+        setTimeout(() => setSaveMessage(''), 4000);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadContent();
+  }, [activeSection]);
+
 
   const handleContentChange = (section, data) => {
     setContent(prev => ({
