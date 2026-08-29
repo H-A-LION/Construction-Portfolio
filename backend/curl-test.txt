@@ -3,7 +3,7 @@
 # Fixed version - Copy and paste each command one by one
 # ============================================================================
 
-# First, login to get a fresh token
+echo "# First, login to get a fresh token"
 curl -s -X POST \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@buildport.com","password":"admin123"}' \
@@ -11,30 +11,31 @@ curl -s -X POST \
 
 # Copy the token from the response above and set it here
 TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlhdCI6MTc4Nzg2MzUzMiwiZXhwIjoxNzg4NDY4MzMyLCJyb2xlIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGJ1aWxkcG9ydC5jb20ifQ.YzKKW0tRh3CH2oz43yPJJcPKBJwuI-5Ib3VkFww89zE"
-
+echo -e "
 # ============================================================================
 # 1. AUTHENTICATION TESTS
 # ============================================================================
-
-# 1.1 Login (Public) - NO jq, just raw output
+"
+echo "# 1.1 Login (Public) - NO jq, just raw output"
 curl -s -X POST \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@buildport.com","password":"admin123"}' \
   http://localhost:8000/api/v1/auth/login
 
-# 1.2 Get Current User (Protected)
+echo "# 1.2 Get Current User (Protected)"
+
 curl -s -X GET \
   -H "Authorization: Bearer $TOKEN" \
   http://localhost:8000/api/v1/auth/me
 
-# 1.3 Update Profile (Protected)
+echo "# 1.3 Update Profile (Protected)"
 curl -s -X PUT \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{"name":"Admin User Updated","email":"admin@buildport.com"}' \
   http://localhost:8000/api/v1/auth/update
 
-# 1.4 Logout (Protected)
+echo "# 1.4 Logout (Protected)"
 curl -s -X POST \
   -H "Authorization: Bearer $TOKEN" \
   http://localhost:8000/api/v1/auth/logout
@@ -43,28 +44,28 @@ curl -s -X POST \
 # 2. CONTENT TESTS
 # ============================================================================
 
-# 2.1 Get Hero Content (Public)
+echo "# 2.1 Get Hero Content (Public)"
 curl -s -X GET \
   http://localhost:8000/api/v1/content/hero
 
-# 2.2 Get All Content (Protected)
+echo "# 2.2 Get All Content (Protected)"
 curl -s -X GET \
   -H "Authorization: Bearer $TOKEN" \
   http://localhost:8000/api/v1/content/all
 
-# 2.3 Update Hero Content (Protected)
+echo "# 2.3 Update Hero Content (Protected)"
 curl -s -X PUT \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{"data":{"badge":"🏗️ Premier Construction 2024","title":"Building <span>Tomorrow</span> Today","description":"We transform visions into reality","stats":[{"number":"450","label":"Projects"},{"number":"98","label":"Satisfaction"},{"number":"25","label":"Awards"}]}}' \
   http://localhost:8000/api/v1/content/hero
 
-# 2.4 Get Content History (Protected)
+echo "# 2.4 Get Content History (Protected)"
 curl -s -X GET \
   -H "Authorization: Bearer $TOKEN" \
   http://localhost:8000/api/v1/content/hero/history
 
-# 2.5 Revert to Version 1 (Protected)
+echo "# 2.5 Revert to Version 1 (Protected)"
 curl -s -X POST \
   -H "Authorization: Bearer $TOKEN" \
   http://localhost:8000/api/v1/content/hero/revert/1
@@ -73,36 +74,36 @@ curl -s -X POST \
 # 3. PROJECT TESTS (CRUD)
 # ============================================================================
 
-# 3.1 Get All Projects (Protected)
+echo "# 3.1 Get All Projects (Protected)"
 curl -s -X GET \
   -H "Authorization: Bearer $TOKEN" \
   http://localhost:8000/api/v1/projects
 
-# 3.2 Create Project (Protected)
+echo "# 3.2 Create Project (Protected)"
 curl -s -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{"title":"Modern Office Tower","description":"A 50-story commercial office tower","category":"Commercial","location":"New York City","year":"2024"}' \
   http://localhost:8000/api/v1/projects
 
-# 3.3 Get Single Project (Replace 1 with actual ID)
+echo "# 3.3 Get Single Project (Replace 1 with actual ID)"
 curl -s -X GET \
   -H "Authorization: Bearer $TOKEN" \
   http://localhost:8000/api/v1/projects/1
 
-# 3.4 Update Project (Replace 1 with actual ID)
+echo "# 3.4 Update Project (Replace 1 with actual ID)"
 curl -s -X PUT \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{"title":"Updated Office Tower","status":"completed"}' \
   http://localhost:8000/api/v1/projects/1
 
-# 3.5 Delete Project (Replace 1 with actual ID)
+echo "# 3.5 Delete Project (Replace 1 with actual ID)"
 curl -s -X DELETE \
   -H "Authorization: Bearer $TOKEN" \
   http://localhost:8000/api/v1/projects/1
 
-# 3.6 Reorder Projects
+echo "# 3.6 Reorder Projects"
 curl -s -X PUT \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
@@ -113,36 +114,36 @@ curl -s -X PUT \
 # 4. SERVICE TESTS (CRUD)
 # ============================================================================
 
-# 4.1 Get All Services (Protected)
+echo "# 4.1 Get All Services (Protected)"
 curl -s -X GET \
   -H "Authorization: Bearer $TOKEN" \
   http://localhost:8000/api/v1/services
 
-# 4.2 Create Service (Protected)
+echo "# 4.2 Create Service (Protected)"
 curl -s -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{"title":"Architectural Design","description":"Full architectural design services","icon":"fa-building","category":"Design"}' \
   http://localhost:8000/api/v1/services
 
-# 4.3 Get Single Service (Replace 1 with actual ID)
+echo "# 4.3 Get Single Service (Replace 1 with actual ID)"
 curl -s -X GET \
   -H "Authorization: Bearer $TOKEN" \
   http://localhost:8000/api/v1/services/1
 
-# 4.4 Update Service (Replace 1 with actual ID)
+echo "# 4.4 Update Service (Replace 1 with actual ID)"
 curl -s -X PUT \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{"title":"Updated Architectural Design"}' \
   http://localhost:8000/api/v1/services/1
 
-# 4.5 Delete Service (Replace 1 with actual ID)
+echo "# 4.5 Delete Service (Replace 1 with actual ID)"
 curl -s -X DELETE \
   -H "Authorization: Bearer $TOKEN" \
   http://localhost:8000/api/v1/services/1
 
-# 4.6 Reorder Services
+echo "# 4.6 Reorder Services"
 curl -s -X PUT \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
@@ -153,36 +154,36 @@ curl -s -X PUT \
 # 5. TEAM TESTS (CRUD)
 # ============================================================================
 
-# 5.1 Get All Team Members (Protected)
+echo "# 5.1 Get All Team Members (Protected)"
 curl -s -X GET \
   -H "Authorization: Bearer $TOKEN" \
   http://localhost:8000/api/v1/team
 
-# 5.2 Create Team Member (Protected)
+echo "# 5.2 Create Team Member (Protected)"
 curl -s -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{"name":"John Architect","position":"Lead Architect","bio":"20 years experience","social":{"linkedin":"https://linkedin.com/in/john"}}' \
   http://localhost:8000/api/v1/team
 
-# 5.3 Get Single Team Member (Replace 1 with actual ID)
+echo "# 5.3 Get Single Team Member (Replace 1 with actual ID)"
 curl -s -X GET \
   -H "Authorization: Bearer $TOKEN" \
   http://localhost:8000/api/v1/team/1
 
-# 5.4 Update Team Member (Replace 1 with actual ID)
+echo "# 5.4 Update Team Member (Replace 1 with actual ID)"
 curl -s -X PUT \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{"name":"John Architect Sr.","position":"Senior Lead Architect"}' \
   http://localhost:8000/api/v1/team/1
 
-# 5.5 Delete Team Member (Replace 1 with actual ID)
+echo "# 5.5 Delete Team Member (Replace 1 with actual ID)"
 curl -s -X DELETE \
   -H "Authorization: Bearer $TOKEN" \
   http://localhost:8000/api/v1/team/1
 
-# 5.6 Reorder Team Members
+echo "# 5.6 Reorder Team Members"
 curl -s -X PUT \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
@@ -193,13 +194,13 @@ curl -s -X PUT \
 # 6. IMAGE UPLOAD TESTS
 # ============================================================================
 
-# 6.1 Upload Hero Image (Replace path with actual image)
+echo "# 6.1 Upload Hero Image (Replace path with actual image)"
 curl -s -X POST \
   -H "Authorization: Bearer $TOKEN" \
-  -F "hero_image=@/home/hkali/Desktop/image.jpg" \
+  -F "hero_image=@/home/hkali/Desktop/VioletPro/backend/uploads/Home.jpg" \
   http://localhost:8000/api/v1/content/hero/upload-image
 
-# 6.2 Delete Hero Image
+echo "# 6.2 Delete Hero Image"
 curl -s -X DELETE \
   -H "Authorization: Bearer $TOKEN" \
   http://localhost:8000/api/v1/content/hero/delete-image
@@ -208,7 +209,7 @@ curl -s -X DELETE \
 # 7. BULK CREATE (Create multiple records at once)
 # ============================================================================
 
-# 7.1 Create 3 Projects in a loop
+echo "#7.1 Create 3 Projects in a loop"
 for i in 1 2 3; do
   curl -s -X POST \
     -H "Content-Type: application/json" \
@@ -218,7 +219,7 @@ for i in 1 2 3; do
   echo ""
 done
 
-# 7.2 Create 3 Services in a loop
+echo "# 7.2 Create 3 Services in a loop"
 for i in 1 2 3; do
   curl -s -X POST \
     -H "Content-Type: application/json" \
@@ -228,7 +229,7 @@ for i in 1 2 3; do
   echo ""
 done
 
-# 7.3 Create 3 Team Members in a loop
+echo "# 7.3 Create 3 Team Members in a loop"
 for i in 1 2 3; do
   curl -s -X POST \
     -H "Content-Type: application/json" \

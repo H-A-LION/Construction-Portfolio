@@ -21,7 +21,7 @@ class ContentController {
         
         // Check if data exists and decode
         $data = isset($content['data']) && !empty($content['data']) 
-            ? json_decode($content['data'], true) 
+            ? (is_string($content['data']) ? json_decode($content['data'], true) : $content['data']) 
             : [];
         
         return Response::success($data);
@@ -30,30 +30,52 @@ class ContentController {
     /**
      * Get all content sections - FIXED
      */
-    public function getAll() {
-        $content = Content::getAllSections();
+    // src/Controllers/ContentController.php
+public function getAll() {
+    try {
+        $db = Database::getInstance()->getConnection();
         
-        // Process each section
+        // Get all distinct sections
+        $stmt = $db->query("SELECT DISTINCT section FROM content ORDER BY section");
+        $sections = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        
+        if (empty($sections)) {
+            return Response::notFound('Content not found');
+        }
+        
         $result = [];
-        if (is_array($content)) {
-            foreach ($content as $section) {
-                $sectionData = isset($section['data']) && !empty($section['data']) 
-                    ? json_decode($section['data'], true) 
-                    : [];
-                
+        foreach ($sections as $section) {
+            // Get latest published version
+            $stmt = $db->prepare("
+                SELECT * FROM content 
+                WHERE section = :section AND is_published = 1 
+                ORDER BY version DESC LIMIT 1
+            ");
+            $stmt->execute([':section' => $section]);
+            $content = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if ($content) {
+                $data = json_decode($content['data'], true);
                 $result[] = [
-                    'section' => $section['section'] ?? 'unknown',
-                    'version' => $section['version'] ?? 0,
-                    'data' => $sectionData,
-                    'is_published' => $section['is_published'] ?? true,
-                    'last_modified' => $section['created_at'] ?? null,
-                    'last_modified_by' => $section['last_modified_by'] ?? null
+                    'section' => $section,
+                    'version' => $content['version'],
+                    'data' => $data,
+                    'is_published' => (bool)$content['is_published'],
+                    'last_modified' => $content['created_at'],
+                    'last_modified_by' => $content['last_modified_by']
                 ];
             }
         }
         
+        if (empty($result)) {
+            return Response::notFound('Content not found');
+        }
+        
         return Response::success($result);
+    } catch (\Exception $e) {
+        return Response::error('Failed to fetch content: ' . $e->getMessage(), 500);
     }
+}   
 
     /**
      * Update content for a specific section - FIXED
@@ -88,7 +110,7 @@ class ContentController {
         return Response::success([
             'section' => $section,
             'version' => $newVersion,
-            'data' => $input['data']
+            'data' => is_string($input['data']) ? json_decode($input['data'], true) : $input['data']
         ], 'Content updated successfully');
     }
 
