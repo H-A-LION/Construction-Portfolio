@@ -7,6 +7,7 @@ use App\Helpers\Database;
 use App\Models\Content;
 use App\Models\User;
 use Exception;
+use PDO;
 
 class ContentController {
     
