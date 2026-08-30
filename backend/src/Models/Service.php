@@ -14,11 +14,6 @@ class Service {
             ORDER BY display_order ASC, created_at DESC
         ");
         $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        // foreach ($services as &$service) {
-        //     $service['features'] = json_decode($service['features'], true);
-        // }
-        
         return $services;
     }
 
@@ -27,21 +22,11 @@ class Service {
         $stmt = $db->prepare("SELECT * FROM services WHERE id = :id");
         $stmt->execute([':id' => $id]);
         $service = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        // if ($service) {
-        //     $service['features'] = json_decode($service['features'], true);
-        // }
-        
         return $service;
     }
 
     public static function create($data) {
         $db = Database::getInstance()->getConnection();
-        
-        // if (isset($data['features'])) {
-        //     $data['features'] = json_encode($data['features']);
-        // }
-        
         $fields = array_keys($data);
         $placeholders = array_map(function($field) {
             return ":$field";
@@ -56,17 +41,16 @@ class Service {
 
     public static function update($id, $data) {
         $db = Database::getInstance()->getConnection();
-        
-        // if (isset($data['features'])) {
-        //     $data['features'] = json_encode($data['features']);
-        // }
-        
         $sets = [];
         $params = [':id' => $id];
         
         foreach ($data as $key => $value) {
             $sets[] = "$key = :$key";
             $params[":$key"] = $value;
+        }
+        
+        if (empty($sets)) {
+            return true;
         }
         
         $sql = "UPDATE services SET " . implode(', ', $sets) . " WHERE id = :id";

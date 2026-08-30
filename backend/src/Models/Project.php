@@ -49,17 +49,11 @@ class Project {
         //Array indexed by column name only. 
         $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        // Safely decode JSON fields if they exist
+        // Decode tags JSON if exists
         foreach ($projects as &$project) {
-        if (isset($project['image']) && $project['image'] !== null) {
-            $project['image'] = json_decode($project['image'], true);
-        }
-        if (isset($project['is_featured']) && $project['is_featured'] !== null) {
-            $project['is_featured'] = json_decode($project['is_featured'], true);
-        }
-        if (isset($project['tags']) && $project['tags'] !== null) {
-            $project['tags'] = json_decode($project['tags'], true);
-        }
+            if (isset($project['tags']) && $project['tags'] !== null) {
+                $project['tags'] = json_decode($project['tags'], true);
+            }
         }
         
         // Get total count
@@ -88,16 +82,8 @@ class Project {
         $stmt->execute([':id' => $id]);
         $project = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        if ($project) {
-        if (isset($project['images']) && $project['images'] !== null) {
-            $project['images'] = json_decode($project['images'], true);
-        }
-        if (isset($project['features']) && $project['features'] !== null) {
-            $project['features'] = json_decode($project['features'], true);
-        }
-        if (isset($project['tags']) && $project['tags'] !== null) {
+        if ($project && isset($project['tags']) && $project['tags'] !== null) {
             $project['tags'] = json_decode($project['tags'], true);
-        }
         }
         
         return $project;
@@ -106,12 +92,14 @@ class Project {
     public static function create($data) {
         $db = Database::getInstance()->getConnection();
         
-        // Encode JSON fields
-        if (isset($data['image'])) {
-            $data['image'] = json_encode($data['image']);
-        }
-        if (isset($data['is_featured'])) {
-            $data['is_featured'] = json_encode($data['is_featured']);
+        // Remove fields that don't exist in schema
+        unset($data['images']);
+        unset($data['features']);
+        unset($data['status']);
+        
+        // Handle tags JSON
+        if (isset($data['tags']) && is_array($data['tags'])) {
+            $data['tags'] = json_encode($data['tags']);
         }
         
         $fields = array_keys($data);
@@ -129,12 +117,9 @@ class Project {
     public static function update($id, $data) {
         $db = Database::getInstance()->getConnection();
         
-        // Encode JSON fields
-        if (isset($data['image'])) {
-            $data['image'] = json_encode($data['image']);
-        }
-        if (isset($data['is_featured'])) {
-            $data['is_featured'] = json_encode($data['is_featured']);
+                // Handle tags JSON
+        if (isset($data['tags']) && is_array($data['tags'])) {
+            $data['tags'] = json_encode($data['tags']);
         }
         
         $sets = [];
