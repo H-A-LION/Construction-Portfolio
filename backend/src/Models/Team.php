@@ -26,6 +26,20 @@ class Team {
     public static function create($data) {
         $db = Database::getInstance()->getConnection();
         
+        // Handle social links if passed as JSON
+        if (isset($data['social']) && is_array($data['social'])) {
+            if (isset($data['social']['linkedin'])) {
+                $data['social_linkedin'] = $data['social']['linkedin'];
+            }
+            if (isset($data['social']['twitter'])) {
+                $data['social_twitter'] = $data['social']['twitter'];
+            }
+            if (isset($data['social']['github'])) {
+                $data['social_github'] = $data['social']['github'];
+            }
+            unset($data['social']);
+        } 
+        //
         $fields = array_keys($data);
         $placeholders = array_map(function($field) {
             return ":$field";
@@ -41,6 +55,20 @@ class Team {
     public static function update($id, $data) {
         $db = Database::getInstance()->getConnection();
         
+        // Handle social links if passed as JSON
+        if (isset($data['social']) && is_array($data['social'])) {
+            if (isset($data['social']['linkedin'])) {
+                $data['social_linkedin'] = $data['social']['linkedin'];
+            }
+            if (isset($data['social']['twitter'])) {
+                $data['social_twitter'] = $data['social']['twitter'];
+            }
+            if (isset($data['social']['github'])) {
+                $data['social_github'] = $data['social']['github'];
+            }
+            unset($data['social']);
+        }
+
         $sets = [];
         $params = [':id' => $id];
         
