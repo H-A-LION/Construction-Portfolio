@@ -19,10 +19,11 @@ class ContentController {
             return Response::notFound('Content not found');
         }
         
-        // Check if data exists and decode
-        $data = isset($content['data']) && !empty($content['data']) 
-            ? (is_string($content['data']) ? json_decode($content['data'], true) : $content['data']) 
-            : [];
+        // data is already JSON type in database, but might be returned as string
+        $data = $content['data'];
+        if (is_string($data)) {
+            $data = json_decode($data, true);
+        }
         
         return Response::success($data);
     }
@@ -31,51 +32,54 @@ class ContentController {
      * Get all content sections - FIXED
      */
     // src/Controllers/ContentController.php
-public function getAll() {
-    try {
-        $db = Database::getInstance()->getConnection();
+    public function getAll() {
+        try {
+            $db = Database::getInstance()->getConnection();
         
-        // Get all distinct sections
-        $stmt = $db->query("SELECT DISTINCT section FROM content ORDER BY section");
-        $sections = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            // Get all distinct sections
+            $stmt = $db->query("SELECT DISTINCT section FROM content ORDER BY section");
+            $sections = $stmt->fetchAll(PDO::FETCH_COLUMN);
         
-        if (empty($sections)) {
-            return Response::notFound('Content not found');
-        }
-        
-        $result = [];
-        foreach ($sections as $section) {
-            // Get latest published version
-            $stmt = $db->prepare("
-                SELECT * FROM content 
-                WHERE section = :section AND is_published = 1 
-                ORDER BY version DESC LIMIT 1
-            ");
-            $stmt->execute([':section' => $section]);
-            $content = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            if ($content) {
-                $data = json_decode($content['data'], true);
-                $result[] = [
-                    'section' => $section,
-                    'version' => $content['version'],
-                    'data' => $data,
-                    'is_published' => (bool)$content['is_published'],
-                    'last_modified' => $content['created_at'],
-                    'last_modified_by' => $content['last_modified_by']
-                ];
+            if (empty($sections)) {
+                return Response::notFound('Content not found');
             }
-        }
         
-        if (empty($result)) {
-            return Response::notFound('Content not found');
-        }
+            $result = [];
+            foreach ($sections as $section) {
+                // Get latest published version
+                $stmt = $db->prepare("
+                    SELECT * FROM content 
+                    WHERE section = :section AND is_published = 1 
+                    ORDER BY version DESC LIMIT 1
+                ");
+                $stmt->execute([':section' => $section]);
+                $content = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+                if ($content) {
+                    $data = $content['data'];
+                    $data = json_decode($data, true);
+                    $result[] = [
+                        'section' => $section,
+                        'version' => $content['version'],
+                        'data' => $data,
+                        'is_published' => (bool)$content['is_published'],
+                        'last_modified' => $content['created_at'],
+                        'last_modified_by' => $content['last_modified_by'],
+                        'hero_image' => $content['hero_image'] ?? null,
+                        'hero_image_alt' => $content['hero_image_alt'] ?? null
+                    ];
+                }
+            }
         
-        return Response::success($result);
-    } catch (\Exception $e) {
-        return Response::error('Failed to fetch content: ' . $e->getMessage(), 500);
-    }
-}   
+            if (empty($result)) {
+                return Response::notFound('Content not found');
+            }
+        
+            return Response::success($result);
+        } catch (\Exception $e) {
+            return Response::error('Failed to fetch content: ' . $e->getMessage(), 500);
+        }
+    }   
 
     /**
      * Update content for a specific section - FIXED
