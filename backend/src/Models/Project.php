@@ -21,12 +21,7 @@ class Project {
             $where[] = "is_featured = :is_featured";
             $params[':is_featured'] = $filters['is_featured'];
         }
-        
-        if (!empty($filters['status'])) {
-            $where[] = "status = :status";
-            $params[':status'] = $filters['status'];
-        }
-        
+
         $whereClause = !empty($where) ? "WHERE " . implode(' AND ', $where) : "";
         
         $offset = ($page - 1) * $limit;
@@ -38,25 +33,42 @@ class Project {
             LIMIT :limit OFFSET :offset
         ");
         
-        $params[':limit'] = $limit;
-        $params[':offset'] = $offset;
+        //$params[':limit'] = $limit;
+        //$params[':offset'] = $offset;
+
+        //Represents the SQL INTEGER data type.
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
         
         foreach ($params as $key => $value) {
             $stmt->bindValue($key, $value);
         }
         
         $stmt->execute();
+        //Array indexed by column name only. 
         $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        // Decode JSON fields
+        // Safely decode JSON fields if they exist
         foreach ($projects as &$project) {
-            $project['images'] = json_decode($project['images'], true);
-            $project['features'] = json_decode($project['features'], true);
+        if (isset($project['image']) && $project['image'] !== null) {
+            $project['image'] = json_decode($project['image'], true);
+        }
+        if (isset($project['is_featured']) && $project['is_featured'] !== null) {
+            $project['is_featured'] = json_decode($project['is_featured'], true);
+        }
+        if (isset($project['tags']) && $project['tags'] !== null) {
+            $project['tags'] = json_decode($project['tags'], true);
+        }
         }
         
         // Get total count
         $countStmt = $db->prepare("SELECT COUNT(*) as total FROM projects {$whereClause}");
+        foreach ($params as $key => $value) {
+            $countStmt->bindValue($key, $value);
+        }
         $countStmt->execute($params);
+        //Array indexed by column name only. 
         $total = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
         
         return [
@@ -77,8 +89,15 @@ class Project {
         $project = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($project) {
+        if (isset($project['images']) && $project['images'] !== null) {
             $project['images'] = json_decode($project['images'], true);
+        }
+        if (isset($project['features']) && $project['features'] !== null) {
             $project['features'] = json_decode($project['features'], true);
+        }
+        if (isset($project['tags']) && $project['tags'] !== null) {
+            $project['tags'] = json_decode($project['tags'], true);
+        }
         }
         
         return $project;
@@ -88,11 +107,11 @@ class Project {
         $db = Database::getInstance()->getConnection();
         
         // Encode JSON fields
-        if (isset($data['images'])) {
-            $data['images'] = json_encode($data['images']);
+        if (isset($data['image'])) {
+            $data['image'] = json_encode($data['image']);
         }
-        if (isset($data['features'])) {
-            $data['features'] = json_encode($data['features']);
+        if (isset($data['is_featured'])) {
+            $data['is_featured'] = json_encode($data['is_featured']);
         }
         
         $fields = array_keys($data);
@@ -111,11 +130,11 @@ class Project {
         $db = Database::getInstance()->getConnection();
         
         // Encode JSON fields
-        if (isset($data['images'])) {
-            $data['images'] = json_encode($data['images']);
+        if (isset($data['image'])) {
+            $data['image'] = json_encode($data['image']);
         }
-        if (isset($data['features'])) {
-            $data['features'] = json_encode($data['features']);
+        if (isset($data['is_featured'])) {
+            $data['is_featured'] = json_encode($data['is_featured']);
         }
         
         $sets = [];
@@ -126,6 +145,9 @@ class Project {
             $params[":$key"] = $value;
         }
         
+        if (empty($sets)) {
+            return true; // Nothing to update
+        } 
         $sql = "UPDATE projects SET " . implode(', ', $sets) . " WHERE id = :id";
         $stmt = $db->prepare($sql);
         return $stmt->execute($params);

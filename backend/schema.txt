@@ -1,0 +1,68 @@
+SELECT
+    TABLE_NAME,
+    COLUMN_NAME,
+    COLUMN_TYPE,
+    IS_NULLABLE,
+    COLUMN_KEY,
+    COLUMN_DEFAULT,
+    EXTRA
+FROM information_schema.COLUMNS
+WHERE TABLE_SCHEMA = 'ConstructionPortfolioApp'
+ORDER BY TABLE_NAME, ORDINAL_POSITION;
+
+
+TABLE_NAME   	COLUMN_NAME	COLUMN_TYPE	IS_NULLABLE	COLUMN_KEY	COLUMN_DEFAULT	EXTRA	
+content	id	int unsigned	NO	PRI	NULL	auto_increment	
+content	section	varchar(50)	NO	MUL	NULL		
+content	data	json	NO		NULL		
+content	version	int	NO	MUL	1		
+content	last_modified_by	int unsigned	YES	MUL	NULL		
+content	is_published	tinyint(1)	YES		1		
+content	created_at	timestamp	YES		CURRENT_TIMESTAMP	DEFAULT_GENERATED	
+content	updated_at	timestamp	YES		CURRENT_TIMESTAMP	DEFAULT_GENERATED on update CURRENT_TIMESTAMP	
+content	hero_image	varchar(255)	YES		NULL		
+content	hero_image_alt	varchar(255)	YES		NULL		
+projects	id	int unsigned	NO	PRI	NULL	auto_increment	
+projects	title	varchar(100)	NO		NULL		
+projects	category	varchar(50)	NO	MUL	NULL		
+projects	description	text	YES		NULL		
+projects	location	varchar(200)	NO		NULL		
+projects	tags	json	YES		NULL		
+projects	image	varchar(255)	YES		NULL		
+projects	is_featured	tinyint(1)	YES	MUL	0		
+projects	display_order	int	YES		0		
+projects	created_at	timestamp	YES		CURRENT_TIMESTAMP	DEFAULT_GENERATED	
+projects	updated_at	timestamp	YES		CURRENT_TIMESTAMP	DEFAULT_GENERATED on update CURRENT_TIMESTAMP	
+services	id	int unsigned	NO	PRI	NULL	auto_increment	
+services	icon	varchar(50)	NO		NULL		
+services	title	varchar(100)	NO		NULL		
+services	description	varchar(300)	NO		NULL		
+services	display_order	int	YES		0		
+services	is_active	tinyint(1)	YES	MUL	1		
+services	created_at	timestamp	YES		CURRENT_TIMESTAMP	DEFAULT_GENERATED	
+services	updated_at	timestamp	YES		CURRENT_TIMESTAMP	DEFAULT_GENERATED on update CURRENT_TIMESTAMP	
+team	id	int unsigned	NO	PRI	NULL	auto_increment	
+team	name	varchar(100)	NO		NULL		
+team	role	varchar(100)	NO		NULL		
+team	experience	varchar(50)	YES		NULL		
+team	bio	text	YES		NULL		
+team	avatar	varchar(255)	YES		NULL		
+team	social_linkedin	varchar(255)	YES		NULL		
+team	social_twitter	varchar(255)	YES		NULL		
+team	social_github	varchar(255)	YES		NULL		
+team	display_order	int	YES		0		
+team	is_active	tinyint(1)	YES	MUL	1		
+team	created_at	timestamp	YES		CURRENT_TIMESTAMP	DEFAULT_GENERATED	
+team	updated_at	timestamp	YES		CURRENT_TIMESTAMP	DEFAULT_GENERATED on update CURRENT_TIMESTAMP	
+users	id	int unsigned	NO	PRI	NULL	auto_increment	
+users	name	varchar(100)	NO		NULL		
+users	email	varchar(100)	NO	UNI	NULL		
+users	password	varchar(255)	NO		NULL		
+users	role	enum('admin','editor','viewer')	YES		viewer		
+users	avatar	varchar(255)	YES		NULL		
+users	last_login	datetime	YES		NULL		
+users	is_active	tinyint(1)	YES		1		
+users	reset_password_token	varchar(255)	YES		NULL		
+users	reset_password_expire	datetime	YES		NULL		
+users	created_at	timestamp	YES		CURRENT_TIMESTAMP	DEFAULT_GENERATED	
+users	updated_at	timestamp	YES		CURRENT_TIMESTAMP	DEFAULT_GENERATED on update CURRENT_TIMESTAMP	

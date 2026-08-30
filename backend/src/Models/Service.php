@@ -15,9 +15,9 @@ class Service {
         ");
         $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        foreach ($services as &$service) {
-            $service['features'] = json_decode($service['features'], true);
-        }
+        // foreach ($services as &$service) {
+        //     $service['features'] = json_decode($service['features'], true);
+        // }
         
         return $services;
     }
@@ -28,9 +28,9 @@ class Service {
         $stmt->execute([':id' => $id]);
         $service = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        if ($service) {
-            $service['features'] = json_decode($service['features'], true);
-        }
+        // if ($service) {
+        //     $service['features'] = json_decode($service['features'], true);
+        // }
         
         return $service;
     }
@@ -38,9 +38,9 @@ class Service {
     public static function create($data) {
         $db = Database::getInstance()->getConnection();
         
-        if (isset($data['features'])) {
-            $data['features'] = json_encode($data['features']);
-        }
+        // if (isset($data['features'])) {
+        //     $data['features'] = json_encode($data['features']);
+        // }
         
         $fields = array_keys($data);
         $placeholders = array_map(function($field) {
@@ -57,9 +57,9 @@ class Service {
     public static function update($id, $data) {
         $db = Database::getInstance()->getConnection();
         
-        if (isset($data['features'])) {
-            $data['features'] = json_encode($data['features']);
-        }
+        // if (isset($data['features'])) {
+        //     $data['features'] = json_encode($data['features']);
+        // }
         
         $sets = [];
         $params = [':id' => $id];
