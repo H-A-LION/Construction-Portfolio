@@ -3,10 +3,12 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/v1';
 
 export const fetchHeroContent = async () => {
   try {
-    const response = await fetch(`${API_URL}/content/hero`);////////////////////////////////
+    const response = await fetch(`${API_URL}/content/hero`);
     if (!response.ok) throw new Error('Failed to fetch hero content');
     const result = await response.json();
-    return result.data;
+    // The data might be a string (JSON) or already parsed object
+    const data = typeof result.data === 'string' ? JSON.parse(result.data) : result.data;
+    return data;
   } catch (error) {
     console.error('Error fetching hero content:', error);
     return getDefaultHeroContent();
@@ -18,7 +20,8 @@ export const fetchAboutContent = async () => {
     const response = await fetch(`${API_URL}/content/about`);
     if (!response.ok) throw new Error('Failed to fetch about content');
     const result = await response.json();
-    return result.data;
+    const data = typeof result.data === 'string' ? JSON.parse(result.data) : result.data;
+    return data;
   } catch (error) {
     console.error('Error fetching about content:', error);
     return getDefaultAboutContent();
@@ -30,7 +33,7 @@ export const fetchServicesContent = async () => {
     const response = await fetch(`${API_URL}/services`);
     if (!response.ok) throw new Error('Failed to fetch services');
     const result = await response.json();
-    return result.data;
+    return result.data || [];
   } catch (error) {
     console.error('Error fetching services:', error);
     return getDefaultServices();
@@ -42,7 +45,9 @@ export const fetchProjectsContent = async () => {
     const response = await fetch(`${API_URL}/projects`);
     if (!response.ok) throw new Error('Failed to fetch projects');
     const result = await response.json();
-    return result.data;
+    // Projects might have nested data structure with pagination
+    const data = result.data && result.data.data ? result.data.data : result.data || [];
+    return data;
   } catch (error) {
     console.error('Error fetching projects:', error);
     return getDefaultProjects();
@@ -54,7 +59,7 @@ export const fetchTeamContent = async () => {
     const response = await fetch(`${API_URL}/team`);
     if (!response.ok) throw new Error('Failed to fetch team');
     const result = await response.json();
-    return result.data;
+    return result.data || [];
   } catch (error) {
     console.error('Error fetching team:', error);
     return getDefaultTeam();
