@@ -47,23 +47,25 @@ const Projects = () => {
       <div className="projects-grid">
         {projects.map((project, index) => (
           <div key={index} className="project-card">
-            <div className="project-image">
+            <div className="project-image-wrapper">
               <img src={project.image} alt={project.title} />
-            </div>
-            <div className="project-info">
-              <span className="project-category">{project.category}</span>
-              <h3>{project.title}</h3>
-              <p className="project-location">
-                <i className="fas fa-map-pin"></i> {project.location}
-              </p>
-              <div className="project-tags">
-                {project.tags.map((tag, idx) => (
-                  <span key={idx} className="tag">{tag}</span>
-                ))}
+              <div className="project-overlay">
+                <div className="project-info">
+                  <span className="project-category">{project.category}</span>
+                  <h3>{project.title}</h3>
+                  <p className="project-location">
+                    <i className="fas fa-map-pin"></i> {project.location}
+                  </p>
+                  <div className="project-tags">
+                    {project.tags.map((tag, idx) => (
+                      <span key={idx} className="tag">{tag}</span>
+                    ))}
+                  </div>
+                  <button className="project-link">
+                    View Project <i className="fas fa-arrow-right"></i>
+                  </button>
+                </div>
               </div>
-              <button className="project-link">
-                View Project <i className="fas fa-arrow-right"></i>
-              </button>
             </div>
           </div>
         ))}
