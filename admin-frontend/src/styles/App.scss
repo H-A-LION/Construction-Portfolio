@@ -3,7 +3,8 @@
 @import './login';
 @import './sidebar';
 @import './variables';
-// Add to App.scss
+
+// Admin toggle button (optional)
 .admin-toggle {
   position: fixed;
   bottom: 30px;
@@ -12,8 +13,8 @@
   
   .admin-toggle-btn {
     padding: 12px 20px;
-    background: #1a1a2e;
-    color: #fff;
+    background: $color-primary;
+    color: white;
     border: none;
     border-radius: 12px;
     font-size: 14px;
@@ -27,7 +28,7 @@
     &:hover {
       transform: translateY(-2px);
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-      background: #2d2d44;
+      background: $color-primary-hover;
     }
     
     i {
@@ -35,3 +36,7 @@
     }
   }
 }
+
+// Breakpoints
+$breakpoint-tablet: 768px;
+$breakpoint-mobile: 480px;

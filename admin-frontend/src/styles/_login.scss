@@ -1,4 +1,4 @@
-// Login Styles
+// Login Styles - White & Orange Theme
 .admin-login {
   min-height: 100vh;
   display: flex;
@@ -6,8 +6,8 @@
   justify-content: center;
   background: linear-gradient(
     135deg,
-    $color-dark 0%,
-    $color-dark-secondary 100%
+    #fef3c7 0%,
+    #fde68a 100%
   );
 
   .login-container {
@@ -17,12 +17,10 @@
   }
 
   .login-card {
-    background: $color-white-05;
-    backdrop-filter: blur(10px);
+    background: white;
     border-radius: 20px;
     padding: 40px;
-    border: 1px solid $color-white-10;
-    box-shadow: 0 20px 60px $shadow-dark;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
   }
 
   .login-header {
@@ -42,7 +40,7 @@
       }
 
       h1 {
-        color: $color-white;
+        color: $color-text-dark;
         font-size: 28px;
         font-weight: 700;
         margin: 0;
@@ -50,7 +48,7 @@
     }
 
     p {
-      color: $color-white-60;
+      color: $color-text-muted;
       font-size: 16px;
     }
   }
@@ -61,7 +59,7 @@
 
       label {
         display: block;
-        color: $color-white-80;
+        color: $color-text;
         font-size: 14px;
         font-weight: 500;
         margin-bottom: 8px;
@@ -75,10 +73,10 @@
       input {
         width: 100%;
         padding: 12px 16px;
-        background: $color-white-05;
-        border: 1px solid $color-white-10;
+        background: $color-background-muted;
+        border: 1px solid $color-border-input;
         border-radius: 10px;
-        color: $color-white;
+        color: $color-text-dark;
         font-size: 16px;
         transition: all 0.3s;
 
@@ -89,7 +87,7 @@
         }
 
         &::placeholder {
-          color: $color-white-30;
+          color: $color-text-muted;
         }
       }
     }
@@ -107,42 +105,13 @@
     gap: 10px;
   }
 
-  .login-options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-
-    .remember-me {
-      color: $color-white-60;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-
-      input[type="checkbox"] {
-        accent-color: $color-primary;
-      }
-    }
-
-    .forgot-password {
-      color: $color-primary;
-      text-decoration: none;
-      font-size: 14px;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
-
   .login-btn {
     width: 100%;
     padding: 14px;
     background: $color-primary;
     border: none;
     border-radius: 10px;
-    color: $color-dark;
+    color: white;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
@@ -166,7 +135,7 @@
     text-align: center;
 
     p {
-      color: $color-white-30;
+      color: $color-text-muted;
       font-size: 13px;
     }
   }

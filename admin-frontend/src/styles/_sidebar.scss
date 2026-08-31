@@ -1,19 +1,20 @@
-
 // Sidebar Styles
 .admin-sidebar {
   width: 280px;
   min-height: 100vh;
-  background: $color-dark;
+  background: white;
   display: flex;
   flex-direction: column;
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
+  border-right: 1px solid $color-border;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.05);
 
   .sidebar-header {
     padding: 30px 24px 20px;
-    border-bottom: 1px solid $color-white-05;
+    border-bottom: 1px solid $color-border;
 
     .sidebar-logo {
       display: flex;
@@ -26,14 +27,14 @@
       }
 
       span {
-        color: $color-white;
+        color: $color-text-dark;
         font-size: 24px;
         font-weight: 700;
       }
     }
 
     .sidebar-subtitle {
-      color: $color-white-40;
+      color: $color-text-muted;
       font-size: 13px;
       margin-top: 8px;
       padding-left: 40px;
@@ -52,7 +53,7 @@
       padding: 12px 16px;
       border: none;
       background: transparent;
-      color: $color-white-60;
+      color: $color-text-muted;
       border-radius: 10px;
       cursor: pointer;
       transition: all 0.3s;
@@ -63,11 +64,16 @@
         width: 20px;
         text-align: center;
         font-size: 16px;
+        color: $color-text-muted;
       }
 
       &:hover {
-        background: $color-white-05;
-        color: $color-white;
+        background: $color-background-muted;
+        color: $color-text-dark;
+
+        i {
+          color: $color-primary;
+        }
       }
 
       &.active {
@@ -83,7 +89,7 @@
 
   .sidebar-footer {
     padding: 20px 12px;
-    border-top: 1px solid $color-white-05;
+    border-top: 1px solid $color-border;
 
     .logout {
       color: $color-logout;

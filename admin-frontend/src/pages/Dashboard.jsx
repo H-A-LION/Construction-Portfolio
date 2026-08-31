@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar';
 import ContentEditor from '../components/ContentEditor';
 import { fetchContent, saveContent } from '../api/contentApi';
 
-const Dashboard = ({ onLogout }) => {
+const Dashboard = ({ onLogout, onBack }) => {
   const [activeSection, setActiveSection] = useState('hero');
   const [content, setContent] = useState({});
   const [loading, setLoading] = useState(false);
@@ -33,6 +33,32 @@ const Dashboard = ({ onLogout }) => {
           { title: 'Sustainable Building', description: 'Eco-friendly materials and practices' }
         ]
       },
+      services: {
+        title: 'Our Services',
+        subtitle: 'Comprehensive construction solutions tailored to your project needs',
+        services: [
+          { icon: 'fa-hard-hat', title: 'General Contracting', description: 'Full-service construction management from ground-up to completion.' },
+          { icon: 'fa-pencil-ruler', title: 'Design & Build', description: 'Integrated design and construction services for seamless delivery.' },
+          { icon: 'fa-house-chimney', title: 'Residential Construction', description: 'Custom homes, renovations, and residential development projects.' }
+        ]
+      },
+      team: {
+        title: 'Our Team',
+        subtitle: 'Meet the experts behind our award-winning projects',
+        members: [
+          { name: 'David Martinez', role: 'CEO & Founder', experience: '25+ years' },
+          { name: 'Sarah Johnson', role: 'Project Director', experience: '18 years' },
+          { name: 'Michael Chen', role: 'Lead Architect', experience: '15 years' }
+        ]
+      },
+      projects: {
+        title: 'Featured Projects',
+        subtitle: 'Explore our portfolio of exceptional construction projects',
+        projects: [
+          { title: 'Riverside Tower', location: 'Austin, TX', category: 'Commercial', tags: ['High-rise', 'LEED Certified'] },
+          { title: 'Willow Creek Estate', location: 'Napa Valley, CA', category: 'Residential', tags: ['Luxury', 'Eco-Friendly'] }
+        ]
+      },
       contact: {
         title: "Let's Build Together",
         description: 'Have a project in mind? Get in touch with our team for a free consultation and quote.',
@@ -44,7 +70,6 @@ const Dashboard = ({ onLogout }) => {
     return defaults[section] || {};
   };
 
-    // Fetch content when section changes
   useEffect(() => {
     const loadContent = async () => {
       setIsLoading(true);
@@ -55,13 +80,11 @@ const Dashboard = ({ onLogout }) => {
           [activeSection]: data
         }));
       } catch (error) {
-        console.error('Error loading content:', error);///////////////////////////////////////////////////////
-        // Set default content if API fails
+        console.error('Error loading content:', error);
         setContent(prev => ({
           ...prev,
           [activeSection]: getDefaultContent(activeSection)
         }));
-
         setSaveMessage('⚠️ Using default content - API connection issue');
         setTimeout(() => setSaveMessage(''), 4000);
       } finally {
@@ -70,7 +93,6 @@ const Dashboard = ({ onLogout }) => {
     };
     loadContent();
   }, [activeSection]);
-
 
   const handleContentChange = (section, data) => {
     setContent(prev => ({
@@ -117,10 +139,16 @@ const Dashboard = ({ onLogout }) => {
       
       <div className="dashboard-content">
         <div className="dashboard-header">
-          <h2>
-            <i className={`fas ${currentSection?.icon}`}></i>
-            Edit {currentSection?.label}
-          </h2>
+          <div className="header-left">
+            <button className="back-btn" onClick={onBack}>
+              <i className="fas fa-arrow-left"></i>
+              Back to Dashboard
+            </button>
+            <h2>
+              <i className={`fas ${currentSection?.icon}`}></i>
+              Edit {currentSection?.label}
+            </h2>
+          </div>
           <div className="header-actions">
             {saveMessage && (
               <span className={`save-message ${saveMessage.includes('✅') ? 'success' : 'error'}`}>

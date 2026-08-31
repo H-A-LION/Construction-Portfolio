@@ -1,24 +1,21 @@
 // ========================================
-// Admin Theme Colors
+// Admin Theme Colors - White & Orange Theme
 // ========================================
 
-// Primary / Accent
+// Primary / Accent (Orange)
 $color-primary: #f59e0b;
-$color-primary-hover: #fbbf24;
+$color-primary-hover: #d97706;
 $color-primary-transparent: rgba(245, 158, 11, 0.1);
-$color-primary-focus-shadow: rgba(245, 158, 11, 0.1);
+$color-primary-focus-shadow: rgba(245, 158, 11, 0.2);
 $color-primary-button-shadow: rgba(245, 158, 11, 0.3);
 
 // Dark
-// $color-dark: #1a1a2e;
-// $color-dark-secondary: #16213e;
-// $color-dark-hover: #2d2d44;
-$color-dark: #c4452b;
+$color-dark: #1a1a2e;
 $color-dark-secondary: #16213e;
 $color-dark-hover: #2d2d44;
 
-// White
-$color-white: #000000;
+// White & Light
+$color-white: #ffffff;
 $color-white-05: rgba(255, 255, 255, 0.05);
 $color-white-10: rgba(255, 255, 255, 0.1);
 $color-white-30: rgba(255, 255, 255, 0.3);
@@ -28,7 +25,7 @@ $color-white-80: rgba(255, 255, 255, 0.8);
 
 // Backgrounds
 $color-background: #f8fafc;
-$color-background-light: #fff;
+$color-background-light: #ffffff;
 $color-background-muted: #f9fafb;
 
 // Borders
@@ -61,5 +58,8 @@ $shadow-dark: rgba(0, 0, 0, 0.5);
 $shadow-light: rgba(0, 0, 0, 0.05);
 $shadow-button: rgba(26, 26, 46, 0.2);
 
+$color-logout: #ef4444;
 
-$color-logout: rgba(255, 0, 0, 0.4);
+// Breakpoints
+$breakpoint-tablet: 768px;
+$breakpoint-mobile: 480px;

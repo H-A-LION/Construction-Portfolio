@@ -1,28 +1,50 @@
 // admin-frontend/src/App.js
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import './index.scss';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showAdmin, setShowAdmin] = useState(false);
+  const [currentPage, setCurrentPage] = useState('login'); // login, dashboard, admin
 
   const handleLogin = () => {
     setIsAuthenticated(true);
-    setShowAdmin(true);
+    setCurrentPage('dashboard');
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    setShowAdmin(false);
+    setCurrentPage('login');
   };
 
-  // if (!isAuthenticated) {
-  //   return <Login onLogin={handleLogin} />;
-  // }
+  const navigateToAdmin = () => {
+    setCurrentPage('admin');
+  };
 
-  return <Dashboard onLogout={handleLogout} />;
+  const navigateToDashboard = () => {
+    setCurrentPage('dashboard');
+  };
+
+  if (!isAuthenticated) {
+    return <Login onLogin={handleLogin} />;
+  }
+
+  if (currentPage === 'dashboard') {
+    return (
+      <AdminDashboard 
+        onLogout={handleLogout} 
+        onNavigateToAdmin={navigateToAdmin}
+      />
+    );
+  }
+
+  if (currentPage === 'admin') {
+    return <Dashboard onLogout={handleLogout} onBack={navigateToDashboard} />;
+  }
+
+  return null;
 }
 
 export default App;
