@@ -76,17 +76,50 @@ export const login = async (email, password) => {
       body: JSON.stringify({ email, password })
     });
     
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || 'Invalid credentials');
+    // Log the response status for debugging
+    console.log('Login response status:', response.status);
+    
+    // Get the response text first
+    const responseText = await response.text();
+    console.log('Login response text:', responseText);
+    
+    // Try to parse as JSON
+    let result;
+    try {
+      result = JSON.parse(responseText);
+    } catch (parseError) {
+      console.error('Failed to parse login response:', parseError);
+      throw new Error('Invalid response from server. Please check if the backend is running.');
     }
     
-    const result = await response.json();
-    if (result.data.token) {
-      localStorage.setItem('token', result.data.token);
-      localStorage.setItem('user', JSON.stringify(result.data.user));
+    if (!response.ok) {
+      throw new Error(result.message || result.error || 'Invalid credentials');
     }
-    return result.data;
+    
+    // Check if the response has the expected structure
+    if (result.success && result.data) {
+      // The token might be in result.data.token or result.token
+      const token = result.data.token || result.token;
+      const user = result.data.user || result.data;
+      
+      if (token) {
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
+        console.log('Login successful, token stored');
+        return result.data;
+      } else {
+        throw new Error('No token received from server');
+      }
+    } else if (result.token) {
+      // Alternative response structure
+      localStorage.setItem('token', result.token);
+      if (result.user) {
+        localStorage.setItem('user', JSON.stringify(result.user));
+      }
+      return result;
+    } else {
+      throw new Error('Invalid response structure from server');
+    }
   } catch (error) {
     console.error('Login error:', error);
     throw error;

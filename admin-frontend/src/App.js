@@ -14,10 +14,10 @@ function App() {
     setCurrentPage('dashboard');
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setCurrentPage('login');
-  };
+  // const handleLogout = () => {
+  //   setIsAuthenticated(false);
+  //   setCurrentPage('login');
+  // };
 
   const navigateToAdmin = () => {
     setCurrentPage('admin');
@@ -31,17 +31,19 @@ function App() {
     return <Login onLogin={handleLogin} />;
   }
 
-  if (currentPage === 'dashboard') {
+  // if (currentPage === 'dashboard') {
     return (
       <AdminDashboard 
-        onLogout={handleLogout} 
+        // onLogout={handleLogout} 
         onNavigateToAdmin={navigateToAdmin}
       />
     );
-  }
+  // }
 
   if (currentPage === 'admin') {
-    return <Dashboard onLogout={handleLogout} onBack={navigateToDashboard} />;
+    return <Dashboard 
+    // onLogout={handleLogout}
+     onBack={navigateToDashboard} />;
   }
 
   return null;

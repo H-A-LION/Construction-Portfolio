@@ -16,10 +16,12 @@ const Login = ({ onLogin }) => {
     setLoading(true);
 
     try {
-      await login(credentials.email, credentials.password);
+      const result = await login(credentials.email, credentials.password);
+      console.log('Login successful:', result);
       onLogin();
     } catch (err) {
-      setError(err.message || 'Login failed. Please try again.');
+      console.error('Login error in component:', err);
+      setError(err.message || 'Login failed. Please check your credentials and try again.');
     } finally {
       setLoading(false);
     }
@@ -64,6 +66,7 @@ const Login = ({ onLogin }) => {
                 onChange={handleChange}
                 placeholder="admin@buildport.com"
                 required
+                autoComplete="email"
               />
             </div>
 
@@ -79,6 +82,7 @@ const Login = ({ onLogin }) => {
                 onChange={handleChange}
                 placeholder="Enter your password"
                 required
+                autoComplete="current-password"
               />
             </div>
 
