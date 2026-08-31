@@ -1,4 +1,8 @@
 import React from 'react';
+import pr1 from '../images/pr1.jpg';
+import pr2 from '../images/pr2.jpg';
+import pr3 from '../images/pr3.jpg';
+import pr4 from '../images/pr4.jpg';
 
 const Projects = () => {
   const projects = [
@@ -6,25 +10,29 @@ const Projects = () => {
       title: 'Riverside Tower',
       location: 'Austin, TX',
       category: 'Commercial',
-      tags: ['High-rise', 'LEED Certified']
+      tags: ['High-rise', 'LEED Certified'],
+      image: pr1
     },
     {
       title: 'Willow Creek Estate',
       location: 'Napa Valley, CA',
       category: 'Residential',
-      tags: ['Luxury', 'Eco-Friendly']
+      tags: ['Luxury', 'Eco-Friendly'],
+      image: pr2
     },
     {
       title: 'Harbor Industrial Hub',
       location: 'Savannah, GA',
       category: 'Industrial',
-      tags: ['Warehouse', 'Logistics']
+      tags: ['Warehouse', 'Logistics'],
+      image: pr3
     },
     {
       title: 'Parkview Medical Pavilion',
       location: 'Denver, CO',
       category: 'Healthcare',
-      tags: ['Institutional', 'Modern']
+      tags: ['Institutional', 'Modern'],
+      image: pr4
     }
   ];
 
@@ -39,8 +47,8 @@ const Projects = () => {
       <div className="projects-grid">
         {projects.map((project, index) => (
           <div key={index} className="project-card">
-            <div className="project-image-placeholder">
-              <i className="fas fa-building"></i>
+            <div className="project-image">
+              <img src={project.image} alt={project.title} />
             </div>
             <div className="project-info">
               <span className="project-category">{project.category}</span>

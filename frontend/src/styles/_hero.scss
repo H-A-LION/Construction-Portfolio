@@ -7,6 +7,9 @@
   align-items: center;
   position: relative;
   padding: $spacing-xl 0;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
 
   // Dark overlay
   .hero-overlay {
@@ -15,7 +18,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
     z-index: 1;
   }
 
@@ -65,7 +68,7 @@
 
     p {
       font-size: $font-size-lg;
-      color: rgba(255, 255, 255, 0.8);
+      color: rgba(255, 255, 255, 0.9);
       max-width: 600px;
       margin: 0 auto $spacing-lg;
       line-height: 1.7;
@@ -151,6 +154,8 @@
 
 @media (max-width: $breakpoint-tablet) {
   .hero {
+    background-attachment: scroll !important;
+    
     &-content {
       h1 {
         font-size: $font-size-2xl;

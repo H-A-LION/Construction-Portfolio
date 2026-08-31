@@ -1,4 +1,5 @@
 import React from 'react';
+import servicesImage from '../images/services.jpg';
 
 const Services = () => {
   const services = [
@@ -34,27 +35,38 @@ const Services = () => {
     }
   ];
 
+  const sectionStyle = {
+    backgroundImage: `url(${servicesImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundAttachment: 'fixed',
+    position: 'relative'
+  };
+
   return (
-    <section className="services">
-      <h2 className="section-title">
-        Our <span>Services</span>
-      </h2>
-      <p className="section-subtitle">
-        Comprehensive construction solutions tailored to your project needs
-      </p>
-      <div className="services-grid">
-        {services.map((service, index) => (
-          <div key={index} className="service-card">
-            <div className="service-icon">
-              <i className={`fas ${service.icon}`}></i>
+    <section className="services" style={sectionStyle}>
+      <div className="services-overlay"></div>
+      <div className="services-content">
+        <h2 className="section-title">
+          Our <span>Services</span>
+        </h2>
+        <p className="section-subtitle">
+          Comprehensive construction solutions tailored to your project needs
+        </p>
+        <div className="services-grid">
+          {services.map((service, index) => (
+            <div key={index} className="service-card">
+              <div className="service-icon">
+                <i className={`fas ${service.icon}`}></i>
+              </div>
+              <h3>{service.title}</h3>
+              <p>{service.description}</p>
+              <button className="service-link">
+                Learn More <i className="fas fa-arrow-right"></i>
+              </button>
             </div>
-            <h3>{service.title}</h3>
-            <p>{service.description}</p>
-            <button className="service-link">
-              Learn More <i className="fas fa-arrow-right"></i>
-            </button>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

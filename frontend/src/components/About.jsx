@@ -1,12 +1,25 @@
 import React from 'react';
+import aboutImage1 from '../images/about-1.jpg';
+import aboutImage2 from '../images/about-2.jpg';
 
 const About = () => {
   return (
     <section className="about">
       <div className="about-container">
         <div className="about-image">
-          <div className="about-image-placeholder">
-            <i className="fas fa-building"></i>
+          <div className="about-image-wrapper">
+            <div className="about-image-main">
+              <img 
+                src={aboutImage1}
+                alt="Construction site" 
+              />
+            </div>
+            <div className="about-image-overlay">
+              <img 
+                src={aboutImage2}
+                alt="Architecture design" 
+              />
+            </div>
           </div>
         </div>
         <div className="about-content">

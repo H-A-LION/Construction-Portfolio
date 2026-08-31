@@ -3,6 +3,35 @@
 .services {
   padding: $spacing-xl 0;
   background: $background-light;
+  position: relative;
+  overflow: hidden;
+
+  .services-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 1;
+  }
+
+  .services-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .section-title {
+    color: white;
+    
+    span {
+      color: $primary-color;
+    }
+  }
+
+  .section-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+  }
 
   &-grid {
     display: grid;
@@ -12,18 +41,19 @@
   }
 
   .service-card {
-    background: $background-white;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
     padding: $spacing-lg;
     border-radius: $radius-md;
     text-align: center;
     transition: all $transition-medium;
     box-shadow: $card-shadow;
-    border: 1px solid $border-color;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 
     &:hover {
       transform: translateY(-6px);
-      box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.1);
-      border-color: $primary-color;
+      box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.2);
+      background: white;
     }
 
     .service-icon {

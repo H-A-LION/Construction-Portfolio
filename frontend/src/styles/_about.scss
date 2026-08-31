@@ -11,6 +11,51 @@
 
   &-image {
     flex: 1;
+    
+    &-wrapper {
+      position: relative;
+      width: 100%;
+      height: 450px;
+    }
+
+    &-main {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 75%;
+      height: 85%;
+      border-radius: $radius-lg;
+      overflow: hidden;
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
+      z-index: 2;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+    }
+
+    &-overlay {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 55%;
+      height: 60%;
+      border-radius: $radius-lg;
+      overflow: hidden;
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.2);
+      border: 4px solid white;
+      z-index: 3;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+    }
 
     &-placeholder {
       background: linear-gradient(145deg, $secondary-color, $secondary-light);
@@ -119,8 +164,42 @@
       flex-direction: column;
     }
 
-    &-image-placeholder {
-      min-height: 250px;
+    &-image {
+      width: 100%;
+      
+      &-wrapper {
+        height: 350px;
+      }
+
+      &-main {
+        width: 80%;
+        height: 80%;
+      }
+
+      &-overlay {
+        width: 60%;
+        height: 55%;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .about {
+    &-image {
+      &-wrapper {
+        height: 280px;
+      }
+
+      &-main {
+        width: 85%;
+        height: 75%;
+      }
+
+      &-overlay {
+        width: 65%;
+        height: 50%;
+      }
     }
   }
 }
