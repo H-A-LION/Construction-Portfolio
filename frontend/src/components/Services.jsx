@@ -1,4 +1,6 @@
+// Services.jsx
 import React from 'react';
+import HorizontalScroll from './HorizontalScroll';
 import servicesImage from '../images/services.jpg';
 
 const Services = () => {
@@ -53,7 +55,12 @@ const Services = () => {
         <p className="section-subtitle">
           Comprehensive construction solutions tailored to your project needs
         </p>
-        <div className="services-grid">
+        
+        <HorizontalScroll 
+  speed={3000} 
+  cardWidth={300}  // Slightly smaller for better fit
+  gap={24}
+>
           {services.map((service, index) => (
             <div key={index} className="service-card">
               <div className="service-icon">
@@ -66,7 +73,7 @@ const Services = () => {
               </button>
             </div>
           ))}
-        </div>
+        </HorizontalScroll>
       </div>
     </section>
   );

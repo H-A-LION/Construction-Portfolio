@@ -1,4 +1,6 @@
+// Projects.jsx
 import React from 'react';
+import HorizontalScroll from './HorizontalScroll';
 import pr1 from '../images/pr1.jpg';
 import pr2 from '../images/pr2.jpg';
 import pr3 from '../images/pr3.jpg';
@@ -44,7 +46,12 @@ const Projects = () => {
       <p className="section-subtitle">
         Explore our portfolio of exceptional construction projects
       </p>
-      <div className="projects-grid">
+      
+      <HorizontalScroll 
+  speed={3500} 
+  cardWidth={350}  // Slightly smaller for better fit
+  gap={90}
+>
         {projects.map((project, index) => (
           <div key={index} className="project-card">
             <div className="project-image-wrapper">
@@ -69,7 +76,7 @@ const Projects = () => {
             </div>
           </div>
         ))}
-      </div>
+      </HorizontalScroll>
     </section>
   );
 };

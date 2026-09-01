@@ -1,4 +1,6 @@
+// _services.scss - Clean version
 @import './variables';
+@import './horizontal-scroll';
 
 .services {
   padding: $spacing-xl 0;
@@ -33,13 +35,6 @@
     color: rgba(255, 255, 255, 0.8);
   }
 
-  &-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: $spacing-lg;
-    margin-top: $spacing-xl;
-  }
-
   .service-card {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
@@ -49,6 +44,9 @@
     transition: all $transition-medium;
     box-shadow: $card-shadow;
     border: 1px solid rgba(255, 255, 255, 0.2);
+    height: 100%;
+    min-height: 300px;
+    width: 100%;
 
     &:hover {
       transform: translateY(-6px);

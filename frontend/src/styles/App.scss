@@ -7,6 +7,7 @@
 @import './team';
 @import './pages';
 @import './contact';
+// The horizontal-scroll is imported in services and projects
 
 * {
   margin: 0;
@@ -34,6 +35,11 @@ body {
 section {
   padding: $spacing-xl 0;
   scroll-margin-top: 80px;
+  
+  &#home {
+    padding-top: 0;
+    padding-bottom: $spacing-xl;
+  }
   
   &:first-of-type {
     padding-top: 0;
@@ -72,5 +78,9 @@ section {
   
   section {
     padding: $spacing-lg 0;
+    
+    &#home {
+      padding-top: 0;
+    }
   }
 }

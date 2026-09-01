@@ -1,3 +1,4 @@
+// _navbar.scss - Updated
 @import './variables';
 
 .navbar {
@@ -8,7 +9,7 @@
   backdrop-filter: blur(10px);
   border-bottom: 1px solid $border-color;
   padding: $spacing-sm 0;
-  margin-bottom: $spacing-xl;
+  margin-bottom: 0; // Remove margin-bottom
 
   &-container {
     display: flex;
@@ -91,6 +92,17 @@
       &:hover::after {
         width: 70%;
       }
+
+      // Active state styles
+      &.active {
+        color: $primary-color;
+        font-weight: $font-weight-semibold;
+
+        &::after {
+          width: 70%;
+          background: $primary-color;
+        }
+      }
     }
 
     .nav-cta {
@@ -150,6 +162,10 @@
 
         &:hover {
           background: rgba($primary-color, 0.05);
+        }
+
+        &.active {
+          background: rgba($primary-color, 0.08);
         }
       }
 

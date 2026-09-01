@@ -1,14 +1,9 @@
+// _projects.scss - Clean version
 @import './variables';
+@import './horizontal-scroll';
 
 .projects {
   padding: $spacing-xl 0;
-
-  &-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: $spacing-lg;
-    margin-top: $spacing-xl;
-  }
 
   .project-card {
     border-radius: $radius-md;
@@ -38,7 +33,6 @@
         transition: transform $transition-slow;
       }
 
-      // Dark gradient overlay
       &::after {
         content: '';
         position: absolute;
@@ -141,7 +135,6 @@
       }
     }
 
-    // Hover effects on the entire card
     &:hover {
       .project-image-wrapper {
         img {
@@ -170,44 +163,6 @@
             transform: translateY(0);
           }
         }
-      }
-    }
-  }
-}
-
-// Responsive adjustments
-@media (max-width: $breakpoint-tablet) {
-  .projects {
-    .project-card {
-      .project-image-wrapper {
-        height: 280px;
-
-        .project-overlay {
-          padding: $spacing-md;
-        }
-
-        .project-info {
-          h3 {
-            font-size: $font-size-lg;
-          }
-
-          .project-link {
-            opacity: 1;
-            transform: translateY(0);
-            padding: $spacing-xs $spacing-md;
-            font-size: $font-size-xs;
-          }
-        }
-      }
-    }
-  }
-}
-
-@media (max-width: $breakpoint-mobile) {
-  .projects {
-    .project-card {
-      .project-image-wrapper {
-        height: 250px;
       }
     }
   }

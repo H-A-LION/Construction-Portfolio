@@ -1,0 +1,173 @@
+// styles/_horizontal-scroll.scss
+@import './variables';
+
+.horizontal-scroll-container {
+  position: relative;
+  overflow: hidden;
+  padding: $spacing-md 0;
+  margin-top: $spacing-xl;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  
+  &:active {
+    cursor: grabbing;
+  }
+  
+  .horizontal-scroll-track {
+    display: flex;
+    gap: $spacing-lg;
+    padding: 0 $spacing-lg;
+    will-change: transform;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .horizontal-scroll-item {
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-4px);
+    }
+  }
+
+  // Navigation Arrows
+  .scroll-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    color: $secondary-color;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(8px);
+    opacity: 0.7;
+    
+    &:hover {
+      opacity: 1;
+      background: white;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+      transform: translateY(-50%) scale(1.08);
+      border-color: $primary-color;
+      color: $primary-color;
+    }
+    
+    &:active {
+      transform: translateY(-50%) scale(0.92);
+    }
+    
+    &.scroll-left {
+      left: 8px;
+    }
+    
+    &.scroll-right {
+      right: 8px;
+    }
+    
+    // For services with dark background
+    .services & {
+      background: rgba(255, 255, 255, 0.9);
+      
+      &:hover {
+        background: white;
+      }
+    }
+  }
+
+  // Dots indicator
+  .scroll-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: $spacing-lg;
+    padding: 0 $spacing-lg;
+    
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.15);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0;
+      
+      .services & {
+        background: rgba(255, 255, 255, 0.3);
+      }
+      
+      &:hover {
+        transform: scale(1.2);
+        background: rgba($primary-color, 0.5);
+        
+        .services & {
+          background: rgba($primary-color, 0.7);
+        }
+      }
+      
+      &.active {
+        background: $primary-color;
+        transform: scale(1.2);
+        box-shadow: 0 0 12px rgba($primary-color, 0.3);
+        width: 28px;
+        border-radius: 6px;
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: $breakpoint-tablet) {
+  .horizontal-scroll-container {
+    .scroll-arrow {
+      width: 40px;
+      height: 40px;
+      font-size: 16px;
+      opacity: 0.9;
+      
+      &.scroll-left {
+        left: 4px;
+      }
+      
+      &.scroll-right {
+        right: 4px;
+      }
+    }
+    
+    .horizontal-scroll-track {
+      padding: 0 $spacing-sm;
+      gap: $spacing-md;
+    }
+    
+    .scroll-dots {
+      .dot {
+        width: 8px;
+        height: 8px;
+        
+        &.active {
+          width: 20px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .horizontal-scroll-container {
+    .scroll-arrow {
+      width: 36px;
+      height: 36px;
+      font-size: 14px;
+    }
+  }
+}
