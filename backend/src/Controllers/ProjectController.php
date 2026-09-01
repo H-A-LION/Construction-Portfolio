@@ -32,13 +32,24 @@ class ProjectController {
         $input = json_decode(file_get_contents('php://input'), true);
         
         // Validate required fields
-        $required = ['title', 'category', 'description', 'location', 'client', 'year'];
+        $required = ['title', 'category', 'location'];
         foreach ($required as $field) {
             if (empty($input[$field])) {
                 return Response::error("Field '{$field}' is required", 400);
             }
         }
-        
+
+        // Set default values for optional fields
+        if (!isset($input['description'])) {
+            $input['description'] = '';
+        }
+        if (!isset($input['is_featured'])) {
+            $input['is_featured'] = 0;
+        }
+        if (!isset($input['display_order'])) {
+            $input['display_order'] = 0;
+        }
+
         $result = Project::create($input);
         if ($result) {
             return Response::success(null, 'Project created successfully', 201);
@@ -74,17 +85,30 @@ class ProjectController {
         return Response::error('Failed to delete project', 500);
     }
 
-    public function reorder() {
-        $input = json_decode(file_get_contents('php://input'), true);
-        
-        if (!isset($input['orders']) || !is_array($input['orders'])) {
-            return Response::error('Orders array is required', 400);
+
+public function reorder() {
+    $input = json_decode(file_get_contents('php://input'), true);
+    
+    if (!isset($input['orders']) || !is_array($input['orders'])) {
+        return Response::error('Orders array is required', 400);
+    }
+    
+    // Validate each order has id and order
+    foreach ($input['orders'] as $order) {
+        if (!isset($order['id']) || !isset($order['order'])) {
+            return Response::error('Each order must have id and order fields', 400);
         }
-        
+    }
+    
+    // Call the model's reorder method directly
+    try {
         $result = Project::reorder($input['orders']);
         if ($result) {
             return Response::success(null, 'Projects reordered successfully');
         }
         return Response::error('Failed to reorder projects', 500);
+    } catch (\Exception $e) {
+        return Response::error('Failed to reorder projects: ' . $e->getMessage(), 500);
     }
+}
 }

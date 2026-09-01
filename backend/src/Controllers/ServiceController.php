@@ -64,17 +64,29 @@ class ServiceController {
         return Response::error('Failed to delete service', 500);
     }
 
-    public function reorder() {
-        $input = json_decode(file_get_contents('php://input'), true);
-        
-        if (!isset($input['orders']) || !is_array($input['orders'])) {
-            return Response::error('Orders array is required', 400);
+public function reorder() {
+    $input = json_decode(file_get_contents('php://input'), true);
+    
+    if (!isset($input['orders']) || !is_array($input['orders'])) {
+        return Response::error('Orders array is required', 400);
+    }
+    
+    // Validate each order has id and order
+    foreach ($input['orders'] as $order) {
+        if (!isset($order['id']) || !isset($order['order'])) {
+            return Response::error('Each order must have id and order fields', 400);
         }
-        
+    }
+    
+    // Call the model's reorder method directly
+    try {
         $result = Service::reorder($input['orders']);
         if ($result) {
             return Response::success(null, 'Services reordered successfully');
         }
         return Response::error('Failed to reorder services', 500);
+    } catch (\Exception $e) {
+        return Response::error('Failed to reorder services: ' . $e->getMessage(), 500);
     }
+}
 }

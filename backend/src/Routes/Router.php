@@ -47,6 +47,27 @@ class Router {
         ];
     }
 
+    private function isPublicRoute($route, $method) {
+        // List of public routes that don't require authentication
+        $publicRoutes = [
+            '/api/v1/auth/login' => ['POST'],
+            '/api/v1/auth/register' => ['POST'],
+            '/api/v1/content/hero' => ['GET'],
+        ];
+        
+        // Check if route is in public routes list
+        if (isset($publicRoutes[$route]) && in_array($method, $publicRoutes[$route])) {
+            return true;
+        }
+        
+        // Public GET requests for content (except /api/v1/content/all which is protected)
+        if ($method === 'GET' && strpos($route, '/api/v1/content/') === 0 && $route !== '/api/v1/content/all') {
+            return true;
+        }
+        
+        return false;
+    }
+
     public function dispatch() {
         foreach ($this->routes as $route) {
             if ($route['method'] !== $this->method) {
@@ -60,19 +81,8 @@ class Router {
                 array_shift($matches);
                 $this->params = $matches;
                 
-                // Check if route needs authentication (all except login/register)
-                $isPublic = in_array($route['route'], [
-                    '/api/v1/auth/login',
-                    '/api/v1/auth/register',
-                    '/api/v1/content/hero'
-                ]);
-                
-                // For public content routes that are GET
-                if (strpos($route['route'], '/api/v1/content/') === 0 && $route['method'] === 'GET') {
-                    $isPublic = true;
-                }
-                
-                if (!$isPublic) {
+                // Check if route needs authentication
+                if (!$this->isPublicRoute($route['route'], $route['method'])) {
                     $auth = new AuthMiddleware();
                     $user = $auth->authenticate();
                     if (!$user) {

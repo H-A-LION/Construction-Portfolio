@@ -14,7 +14,24 @@ class Content {
             ORDER BY version DESC LIMIT 1
         ");
         $stmt->execute([':section' => $section]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        if ($result && is_string($result['data'])) {
+            $decoded = json_decode($result['data'], true);
+            if ($decoded === null) {
+                // Try to clean escaped JSON
+                $cleanData = trim($result['data']);
+                if (strpos($cleanData, '"') === 0) {
+                    $cleanData = stripslashes($cleanData);
+                    $cleanData = trim($cleanData, '"');
+                    $cleanData = stripslashes($cleanData);
+                    $decoded = json_decode($cleanData, true);
+                }
+            }
+            $result['data'] = $decoded ?: [];
+        }
+    
+        return $result;
     }
 
     public static function getAllSections() {
