@@ -1,41 +1,30 @@
-// Services.jsx
-import React from 'react';
+// frontend/src/components/Services.jsx
+import React, { useEffect, useState } from 'react';
 import HorizontalScroll from './HorizontalScroll';
-import servicesImage from '../images/services.jpg';
+import { fetchServices } from '../api/contentApi';
+import servicesImage from '../images/services.jpg'; // Fallback
 
 const Services = () => {
-  const services = [
-    {
-      icon: 'fa-hard-hat',
-      title: 'General Contracting',
-      description: 'Full-service construction management from ground-up to completion.'
-    },
-    {
-      icon: 'fa-pencil-ruler',
-      title: 'Design & Build',
-      description: 'Integrated design and construction services for seamless delivery.'
-    },
-    {
-      icon: 'fa-house-chimney',
-      title: 'Residential Construction',
-      description: 'Custom homes, renovations, and residential development projects.'
-    },
-    {
-      icon: 'fa-city',
-      title: 'Commercial Building',
-      description: 'Office spaces, retail centers, and commercial facilities.'
-    },
-    {
-      icon: 'fa-industry',
-      title: 'Industrial Projects',
-      description: 'Warehouses, manufacturing plants, and industrial facilities.'
-    },
-    {
-      icon: 'fa-helmet-safety',
-      title: 'Renovation & Restoration',
-      description: 'Historic restoration, remodeling, and property renovation.'
-    }
-  ];
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadServices = async () => {
+      try {
+        const data = await fetchServices();
+        setServices(data);
+      } catch (error) {
+        console.error('Error loading services:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadServices();
+  }, []);
+
+  if (loading) {
+    return <div className="services-loading">Loading services...</div>;
+  }
 
   const sectionStyle = {
     backgroundImage: `url(${servicesImage})`,
@@ -57,14 +46,14 @@ const Services = () => {
         </p>
         
         <HorizontalScroll 
-  speed={3000} 
-  cardWidth={300}  // Slightly smaller for better fit
-  gap={24}
->
-          {services.map((service, index) => (
-            <div key={index} className="service-card">
+          speed={3000} 
+          cardWidth={300}
+          gap={24}
+        >
+          {services.map((service) => (
+            <div key={service.id || service.title} className="service-card">
               <div className="service-icon">
-                <i className={`fas ${service.icon}`}></i>
+                <i className={`fas ${service.icon || 'fa-tools'}`}></i>
               </div>
               <h3>{service.title}</h3>
               <p>{service.description}</p>

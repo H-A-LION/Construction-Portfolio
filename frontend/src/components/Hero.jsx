@@ -1,6 +1,6 @@
+// frontend/src/components/Hero.jsx
 import React, { useEffect, useState } from 'react';
-import { fetchHeroContent } from '../api/contentApi';
-import homeImage from '../images/Home.jpg';
+import { fetchHeroContent, getImageUrl } from '../api/contentApi';
 
 const Hero = () => {
   const [content, setContent] = useState(null);
@@ -24,9 +24,12 @@ const Hero = () => {
     return <div className="hero-loading">Loading...</div>;
   }
 
-  // Hero background style with local image
+  // Get hero image URL from backend or use fallback
+  const heroImageUrl = content?.hero_image_url || getImageUrl('home.jpg');
+
+  // Hero background style with image from backend
   const heroStyle = {
-    backgroundImage: `url(${homeImage})`,
+    backgroundImage: `url(${heroImageUrl})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundAttachment: 'fixed',
@@ -34,8 +37,18 @@ const Hero = () => {
     position: 'relative'
   };
 
+  // Fallback style if image fails to load
+  const fallbackStyle = {
+    background: 'linear-gradient(135deg, #0f2838 0%, #1a3a4e 100%)',
+    minHeight: '100vh',
+    position: 'relative'
+  };
+
   return (
-    <section className="hero" style={heroStyle}>
+    <section className="hero" style={heroStyle} onError={(e) => {
+      // If image fails, use fallback
+      e.target.style.background = 'linear-gradient(135deg, #0f2838 0%, #1a3a4e 100%)';
+    }}>
       {/* Dark overlay for text readability */}
       <div className="hero-overlay" />
       <div className="hero-container">
@@ -44,7 +57,9 @@ const Hero = () => {
             <i className="fas fa-trophy"></i>
             <span>{content?.badge || '2026 Award Winner'}</span>
           </div>
-          <h1 dangerouslySetInnerHTML={{ __html: content?.title || 'Built with <span>precision</span> & integrity' }} />
+          <h1 dangerouslySetInnerHTML={{ 
+            __html: content?.title || 'Built with <span>precision</span> & integrity' 
+          }} />
           <p>{content?.description || 'From concept to completion — we deliver commercial, residential, and industrial projects that stand the test of time.'}</p>
           <div className="hero-actions">
             <button className="btn-primary">
@@ -57,25 +72,10 @@ const Hero = () => {
           <div className="hero-stats">
             {content?.stats?.map((stat, index) => (
               <div key={index} className="stat">
-                <span className="stat-number">{stat.number}+</span>
+                <span className="stat-number">{stat.number}</span>
                 <span className="stat-label">{stat.label}</span>
               </div>
-            )) || (
-              <>
-                <div className="stat">
-                  <span className="stat-number">120+</span>
-                  <span className="stat-label">Projects Completed</span>
-                </div>
-                <div className="stat">
-                  <span className="stat-number">98%</span>
-                  <span className="stat-label">Client Satisfaction</span>
-                </div>
-                <div className="stat">
-                  <span className="stat-number">15+</span>
-                  <span className="stat-label">Years Experience</span>
-                </div>
-              </>
-            )}
+            ))}
           </div>
         </div>
       </div>

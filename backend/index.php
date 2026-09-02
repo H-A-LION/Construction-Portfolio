@@ -1,5 +1,4 @@
 <?php
-// index.php //
 require_once __DIR__ . '/vendor/autoload.php';
 
 // Load environment variables
@@ -15,78 +14,74 @@ if ($_ENV['APP_DEBUG'] ?? false) {
     ini_set('display_errors', 0);
 }
 
+// Constants
+$api = '/api/v1';
+$controllers = 'App\\Controllers\\';
+
 // CORS
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
 if (preg_match('/^http:\/\/localhost:\d+$/', $origin)) {
-    header("Access-Control-Allow-Origin: ".($_ENV['CORS_ORIGIN'] ?? "*"));
+    header('Access-Control-Allow-Origin: ' . ($_ENV['CORS_ORIGIN'] ?? '*'));
     header('Access-Control-Allow-Credentials: true');
 }
-// header('Access-Control-Allow-Origin: ' . ($_ENV['CORS_ORIGIN'] ?? '*'));
+
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
 
 // Initialize router
 $router = new App\Routes\Router();
 
-// Auth Routes (Public)
-$router->post('/api/v1/auth/login', [App\Controllers\AuthController::class, 'login']);
-$router->post('/api/v1/auth/register', [App\Controllers\AuthController::class, 'register']);
+// Auth Routes
+$router->post("$api/auth/login", [$controllers . 'AuthController', 'login']);
+$router->post("$api/auth/register", [$controllers . 'AuthController', 'register']);
 
-// Auth Routes (Protected)
-$router->get('/api/v1/auth/me', [App\Controllers\AuthController::class, 'me']);
-$router->post('/api/v1/auth/logout', [App\Controllers\AuthController::class, 'logout']);
-$router->put('/api/v1/auth/update', [App\Controllers\AuthController::class, 'updateProfile']);
+$router->get("$api/auth/me", [$controllers . 'AuthController', 'me']);
+$router->post("$api/auth/logout", [$controllers . 'AuthController', 'logout']);
+$router->put("$api/auth/update", [$controllers . 'AuthController', 'updateProfile']);
 
-// Content Routes (Public)
-$router->get('/api/v1/content/{section}', [App\Controllers\ContentController::class, 'get']);
+// Content Routes
+$router->get("$api/content/{section}", [$controllers . 'ContentController', 'get']);
 
-// Content Routes (Protected)
-$router->get('/api/v1/content/all', [App\Controllers\ContentController::class, 'getAll']);
-$router->put('/api/v1/content/{section}', [App\Controllers\ContentController::class, 'update']);
-$router->get('/api/v1/content/{section}/history', [App\Controllers\ContentController::class, 'history']);
-$router->post('/api/v1/content/{section}/revert/{version}', [App\Controllers\ContentController::class, 'revert']);
-$router->post('/api/v1/content/hero/upload-image', [App\Controllers\ContentController::class, 'uploadHeroImage']);
-$router->delete('/api/v1/content/hero/delete-image', [App\Controllers\ContentController::class, 'deleteHeroImage']);
+$router->get("$api/content/all", [$controllers . 'ContentController', 'getAll']);
+$router->put("$api/content/{section}", [$controllers . 'ContentController', 'update']);
+$router->get("$api/content/{section}/history", [$controllers . 'ContentController', 'history']);
+$router->post("$api/content/{section}/revert/{version}", [$controllers . 'ContentController', 'revert']);
+$router->post("$api/content/hero/upload-image", [$controllers . 'ContentController', 'uploadHeroImage']);
+$router->delete("$api/content/hero/delete-image", [$controllers . 'ContentController', 'deleteHeroImage']);
 
-// Project Routes (Protected)
-$router->get('/api/v1/projects', [App\Controllers\ProjectController::class, 'index']);
-$router->get('/api/v1/projects/{id}', [App\Controllers\ProjectController::class, 'show']);
-$router->post('/api/v1/projects', [App\Controllers\ProjectController::class, 'store']);
-$router->put('/api/v1/projects/{id}', [App\Controllers\ProjectController::class, 'update']);
-$router->delete('/api/v1/projects/{id}', [App\Controllers\ProjectController::class, 'delete']);
-$router->put('/api/v1/projects/reorder', [App\Controllers\ProjectController::class, 'reorder']);
+// Project Routes
+$router->get("$api/projects", [$controllers . 'ProjectController', 'index']);
+$router->get("$api/projects/{id}", [$controllers . 'ProjectController', 'show']);
+$router->post("$api/projects", [$controllers . 'ProjectController', 'store']);
+$router->put("$api/projects/{id}", [$controllers . 'ProjectController', 'update']);
+$router->delete("$api/projects/{id}", [$controllers . 'ProjectController', 'delete']);
+$router->put("$api/projects/reorder", [$controllers . 'ProjectController', 'reorder']);
 
-// Service Routes (Protected)
-$router->get('/api/v1/services', [App\Controllers\ServiceController::class, 'index']);
-$router->get('/api/v1/services/{id}', [App\Controllers\ServiceController::class, 'show']);
-$router->post('/api/v1/services', [App\Controllers\ServiceController::class, 'store']);
-$router->put('/api/v1/services/{id}', [App\Controllers\ServiceController::class, 'update']);
-$router->delete('/api/v1/services/{id}', [App\Controllers\ServiceController::class, 'delete']);
-$router->put('/api/v1/services/reorder', [App\Controllers\ServiceController::class, 'reorder']);
+// Service Routes
+$router->get("$api/services", [$controllers . 'ServiceController', 'index']);
+$router->get("$api/services/{id}", [$controllers . 'ServiceController', 'show']);
+$router->post("$api/services", [$controllers . 'ServiceController', 'store']);
+$router->put("$api/services/{id}", [$controllers . 'ServiceController', 'update']);
+$router->delete("$api/services/{id}", [$controllers . 'ServiceController', 'delete']);
+$router->put("$api/services/reorder", [$controllers . 'ServiceController', 'reorder']);
 
-// Team Routes (Protected)
-$router->get('/api/v1/team', [App\Controllers\TeamController::class, 'index']);
-$router->get('/api/v1/team/{id}', [App\Controllers\TeamController::class, 'show']);
-$router->post('/api/v1/team', [App\Controllers\TeamController::class, 'store']);
-$router->put('/api/v1/team/{id}', [App\Controllers\TeamController::class, 'update']);
-$router->delete('/api/v1/team/{id}', [App\Controllers\TeamController::class, 'delete']);
-$router->put('/api/v1/team/reorder', [App\Controllers\TeamController::class, 'reorder']);
+// Team Routes
+$router->get("$api/team", [$controllers . 'TeamController', 'index']);
+$router->get("$api/team/{id}", [$controllers . 'TeamController', 'show']);
+$router->post("$api/team", [$controllers . 'TeamController', 'store']);
+$router->put("$api/team/{id}", [$controllers . 'TeamController', 'update']);
+$router->delete("$api/team/{id}", [$controllers . 'TeamController', 'delete']);
+$router->put("$api/team/reorder", [$controllers . 'TeamController', 'reorder']);
 
+// Analytics Routes
+$router->post("$api/analytics/track", [$controllers . 'AnalyticsController', 'track']);
 
-// ============================================
-// 🆕 ANALYTICS MICROSERVICE ROUTES
-// ============================================
-
-// Public tracking endpoint (no auth)
-$router->post('/api/v1/analytics/track', [App\Controllers\AnalyticsController::class, 'track']);
-
-// Admin analytics endpoints (require auth)
-$router->get('/api/v1/analytics/admin/overview', [App\Controllers\AnalyticsController::class, 'getOverview']);
-$router->get('/api/v1/analytics/admin/traffic-sources', [App\Controllers\AnalyticsController::class, 'getTrafficSources']);
-$router->get('/api/v1/analytics/admin/geolocation', [App\Controllers\AnalyticsController::class, 'getGeolocation']);
-$router->get('/api/v1/analytics/admin/device-breakdown', [App\Controllers\AnalyticsController::class, 'getDeviceBreakdown']);
-$router->get('/api/v1/analytics/admin/unique-vs-returning', [App\Controllers\AnalyticsController::class, 'getUniqueVsReturning']);
+$router->get("$api/analytics/admin/overview", [$controllers . 'AnalyticsController', 'getOverview']);
+$router->get("$api/analytics/admin/traffic-sources", [$controllers . 'AnalyticsController', 'getTrafficSources']);
+$router->get("$api/analytics/admin/geolocation", [$controllers . 'AnalyticsController', 'getGeolocation']);
+$router->get("$api/analytics/admin/device-breakdown", [$controllers . 'AnalyticsController', 'getDeviceBreakdown']);
+$router->get("$api/analytics/admin/unique-vs-returning", [$controllers . 'AnalyticsController', 'getUniqueVsReturning']);
 
 // Dispatch
 $router->dispatch();

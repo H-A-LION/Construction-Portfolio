@@ -1,42 +1,29 @@
-// Projects.jsx
-import React from 'react';
+// frontend/src/components/Projects.jsx
+import React, { useEffect, useState } from 'react';
 import HorizontalScroll from './HorizontalScroll';
-import pr1 from '../images/pr1.jpg';
-import pr2 from '../images/pr2.jpg';
-import pr3 from '../images/pr3.jpg';
-import pr4 from '../images/pr4.jpg';
+import { fetchProjects } from '../api/contentApi';
 
 const Projects = () => {
-  const projects = [
-    {
-      title: 'Riverside Tower',
-      location: 'Austin, TX',
-      category: 'Commercial',
-      tags: ['High-rise', 'LEED Certified'],
-      image: pr1
-    },
-    {
-      title: 'Willow Creek Estate',
-      location: 'Napa Valley, CA',
-      category: 'Residential',
-      tags: ['Luxury', 'Eco-Friendly'],
-      image: pr2
-    },
-    {
-      title: 'Harbor Industrial Hub',
-      location: 'Savannah, GA',
-      category: 'Industrial',
-      tags: ['Warehouse', 'Logistics'],
-      image: pr3
-    },
-    {
-      title: 'Parkview Medical Pavilion',
-      location: 'Denver, CO',
-      category: 'Healthcare',
-      tags: ['Institutional', 'Modern'],
-      image: pr4
-    }
-  ];
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        const data = await fetchProjects();
+        setProjects(data);
+      } catch (error) {
+        console.error('Error loading projects:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProjects();
+  }, []);
+
+  if (loading) {
+    return <div className="projects-loading">Loading projects...</div>;
+  }
 
   return (
     <section className="projects">
@@ -48,14 +35,20 @@ const Projects = () => {
       </p>
       
       <HorizontalScroll 
-  speed={3500} 
-  cardWidth={350}  // Slightly smaller for better fit
-  gap={90}
->
-        {projects.map((project, index) => (
-          <div key={index} className="project-card">
+        speed={3500} 
+        cardWidth={350}
+        gap={90}
+      >
+        {projects.map((project) => (
+          <div key={project.id || project.title} className="project-card">
             <div className="project-image-wrapper">
-              <img src={project.image} alt={project.title} />
+              <img 
+                src={project.image_url || '/images/default-project.jpg'} 
+                alt={project.title}
+                onError={(e) => {
+                  e.target.src = '/images/default-project.jpg';
+                }}
+              />
               <div className="project-overlay">
                 <div className="project-info">
                   <span className="project-category">{project.category}</span>
@@ -64,7 +57,7 @@ const Projects = () => {
                     <i className="fas fa-map-pin"></i> {project.location}
                   </p>
                   <div className="project-tags">
-                    {project.tags.map((tag, idx) => (
+                    {project.tags?.map((tag, idx) => (
                       <span key={idx} className="tag">{tag}</span>
                     ))}
                   </div>
