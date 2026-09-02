@@ -1,5 +1,6 @@
-// Sidebar Styles
-.admin-sidebar {
+// Sidebar Styles - Fully Responsive
+.admin-sidebar,
+.dashboard-sidebar {
   width: 280px;
   min-height: 100vh;
   background: white;
@@ -11,6 +12,17 @@
   bottom: 0;
   border-right: 1px solid $color-border;
   box-shadow: 2px 0 12px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+
+  // Mobile: hidden by default
+  @media (max-width: $breakpoint-tablet) {
+    transform: translateX(-100%);
+    
+    &.mobile-open {
+      transform: translateX(0);
+    }
+  }
 
   .sidebar-header {
     padding: 30px 24px 20px;
@@ -60,18 +72,21 @@
       width: 100%;
       font-size: 15px;
 
-      i {
-        width: 20px;
-        text-align: center;
-        font-size: 16px;
+      svg {
+        min-width: 20px;
         color: $color-text-muted;
+        transition: color 0.3s;
+      }
+
+      span {
+        white-space: nowrap;
       }
 
       &:hover {
         background: $color-background-muted;
         color: $color-text-dark;
 
-        i {
+        svg {
           color: $color-primary;
         }
       }
@@ -80,7 +95,7 @@
         background: $color-primary-transparent;
         color: $color-primary;
 
-        i {
+        svg {
           color: $color-primary;
         }
       }
@@ -99,5 +114,62 @@
         background: $color-error-background;
       }
     }
+  }
+}
+
+// Sidebar Toggle Button
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1100;
+  background: white;
+  border: 1px solid $color-border;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+
+  &:hover {
+    background: $color-background-muted;
+    transform: scale(1.05);
+  }
+
+  @media (max-width: $breakpoint-tablet) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    top: 12px;
+    left: 12px;
+    padding: 8px;
+  }
+}
+
+// Mobile Overlay
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+
+  @media (max-width: $breakpoint-tablet) {
+    display: block;
+  }
+}
+
+// Sidebar on larger screens
+@media (min-width: $breakpoint-tablet + 1) {
+  .admin-sidebar,
+  .dashboard-sidebar {
+    transform: translateX(0) !important;
   }
 }

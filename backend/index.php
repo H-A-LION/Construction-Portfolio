@@ -73,5 +73,20 @@ $router->put('/api/v1/team/{id}', [App\Controllers\TeamController::class, 'updat
 $router->delete('/api/v1/team/{id}', [App\Controllers\TeamController::class, 'delete']);
 $router->put('/api/v1/team/reorder', [App\Controllers\TeamController::class, 'reorder']);
 
+
+// ============================================
+// 🆕 ANALYTICS MICROSERVICE ROUTES
+// ============================================
+
+// Public tracking endpoint (no auth)
+$router->post('/api/v1/analytics/track', [App\Controllers\AnalyticsController::class, 'track']);
+
+// Admin analytics endpoints (require auth)
+$router->get('/api/v1/analytics/admin/overview', [App\Controllers\AnalyticsController::class, 'getOverview']);
+$router->get('/api/v1/analytics/admin/traffic-sources', [App\Controllers\AnalyticsController::class, 'getTrafficSources']);
+$router->get('/api/v1/analytics/admin/geolocation', [App\Controllers\AnalyticsController::class, 'getGeolocation']);
+$router->get('/api/v1/analytics/admin/device-breakdown', [App\Controllers\AnalyticsController::class, 'getDeviceBreakdown']);
+$router->get('/api/v1/analytics/admin/unique-vs-returning', [App\Controllers\AnalyticsController::class, 'getUniqueVsReturning']);
+
 // Dispatch
 $router->dispatch();

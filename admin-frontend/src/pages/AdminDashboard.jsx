@@ -1,7 +1,19 @@
 // admin-frontend/src/pages/AdminDashboard.jsx
 import React, { useState, useEffect } from 'react';
-import { GoSignOut } from "react-icons/go";
+import { 
+  GoSignOut, 
+  GoHome, 
+  GoGear, 
+  GoTasklist, 
+  GoPeople, 
+  GoTools,
+  GoX,
+  GoPlus,
+  GoArrowRight,
+  GoClock
+} from "react-icons/go";
 import { fetchAllContent } from '../api/contentApi';
+import { FaBars } from "react-icons/fa";
 
 const AdminDashboard = ({ onLogout, onNavigateToAdmin }) => {
   const [stats, setStats] = useState({
@@ -11,6 +23,7 @@ const AdminDashboard = ({ onLogout, onNavigateToAdmin }) => {
     totalContent: 0
   });
   const [loading, setLoading] = useState(true);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   useEffect(() => {
     const loadStats = async () => {
@@ -24,7 +37,6 @@ const AdminDashboard = ({ onLogout, onNavigateToAdmin }) => {
         });
       } catch (error) {
         console.error('Error loading stats:', error);
-        // Set default stats
         setStats({
           projects: 4,
           team: 4,
@@ -37,6 +49,14 @@ const AdminDashboard = ({ onLogout, onNavigateToAdmin }) => {
     };
     loadStats();
   }, []);
+
+  const toggleSidebar = () => {
+    setIsMobileOpen(!isMobileOpen);
+  };
+
+  const closeSidebar = () => {
+    setIsMobileOpen(false);
+  };
 
   const statCards = [
     {
@@ -71,8 +91,16 @@ const AdminDashboard = ({ onLogout, onNavigateToAdmin }) => {
 
   return (
     <div className="admin-dashboard-wrapper">
+      {/* Mobile Toggle Button */}
+      <button className="sidebar-toggle" onClick={toggleSidebar}>
+        {isMobileOpen ? <GoX size={24} /> : <FaBars size={24} />}
+      </button>
+
+      {/* Overlay for mobile */}
+      {isMobileOpen && <div className="sidebar-overlay" onClick={closeSidebar}></div>}
+
       {/* Sidebar */}
-      <div className="dashboard-sidebar">
+      <div className={`dashboard-sidebar ${isMobileOpen ? 'mobile-open' : ''}`}>
         <div className="sidebar-header">
           <div className="sidebar-logo">
             <i className="fas fa-hard-hat"></i>
@@ -83,18 +111,21 @@ const AdminDashboard = ({ onLogout, onNavigateToAdmin }) => {
 
         <nav className="sidebar-nav">
           <button className="sidebar-item active">
-            <i className="fas fa-chart-pie"></i>
+            <GoHome size={20} />
             <span>Dashboard</span>
           </button>
-          <button className="sidebar-item" onClick={onNavigateToAdmin}>
-            <i className="fas fa-edit"></i>
+          <button className="sidebar-item" onClick={() => {
+            onNavigateToAdmin();
+            closeSidebar();
+          }}>
+            <GoGear size={20} />
             <span>Content Manager</span>
           </button>
         </nav>
 
         <div className="sidebar-footer">
           <button className="sidebar-item logout" onClick={onLogout}>
-            <GoSignOut />
+            <GoSignOut size={20} />
             <span>Logout</span>
           </button>
         </div>
@@ -108,7 +139,7 @@ const AdminDashboard = ({ onLogout, onNavigateToAdmin }) => {
             Dashboard Overview
           </h2>
           <button className="admin-btn-primary" onClick={onNavigateToAdmin}>
-            <i className="fas fa-edit"></i>
+            <GoGear size={18} />
             Manage Content
           </button>
         </div>
@@ -129,19 +160,19 @@ const AdminDashboard = ({ onLogout, onNavigateToAdmin }) => {
 
         <div className="dashboard-actions">
           <div className="action-card" onClick={onNavigateToAdmin}>
-            <i className="fas fa-edit"></i>
+            <GoGear size={36} />
             <h4>Content Management</h4>
             <p>Edit all website content sections</p>
             <button className="action-btn">
-              Go to Editor <i className="fas fa-arrow-right"></i>
+              Go to Editor <GoArrowRight />
             </button>
           </div>
           <div className="action-card">
-            <i className="fas fa-cog"></i>
+            <GoClock size={36} />
             <h4>Settings</h4>
             <p>Configure site settings</p>
             <button className="action-btn" disabled>
-              Coming Soon <i className="fas fa-clock"></i>
+              Coming Soon <GoClock />
             </button>
           </div>
         </div>

@@ -3,10 +3,13 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/v1';
 
 const getToken = () => localStorage.getItem('token');
 
-const headers = () => ({
-  'Content-Type': 'application/json',
-  'Authorization': `Bearer ${getToken()}`
-});
+const headers = () => {
+  const token = getToken();
+  return {
+    'Content-Type': 'application/json',
+    ...(token && { 'Authorization': `Bearer ${token}` })
+  };
+};
 
 export const fetchContent = async (section) => {
   try {
@@ -96,11 +99,10 @@ export const login = async (email, password) => {
       throw new Error(result.message || result.error || 'Invalid credentials');
     }
     
-    // Check if the response has the expected structure
+    // Fix: Handle the response structure correctly
     if (result.success && result.data) {
-      // The token might be in result.data.token or result.token
-      const token = result.data.token || result.token;
-      const user = result.data.user || result.data;
+      const token = result.data.token;
+      const user = result.data.user;
       
       if (token) {
         localStorage.setItem('token', token);
@@ -110,13 +112,6 @@ export const login = async (email, password) => {
       } else {
         throw new Error('No token received from server');
       }
-    } else if (result.token) {
-      // Alternative response structure
-      localStorage.setItem('token', result.token);
-      if (result.user) {
-        localStorage.setItem('user', JSON.stringify(result.user));
-      }
-      return result;
     } else {
       throw new Error('Invalid response structure from server');
     }

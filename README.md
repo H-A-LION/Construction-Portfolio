@@ -21,3 +21,20 @@ sudo  mysql -u mysqluser -p
 
 # Update remote origin
 git remote set-url origin https://github.com/Husyn0/Construction-Portfolio.git
+
+
+
+# Create and setup virtual environment:
+cd /var/www/analytics-service
+python3 -m venv web-fingerprint-analytic
+source web-fingerprint-analytic/bin/activate
+pip install -r requirements.txt
+
+# Start Python Analytics Service
+cd ./analytics-service
+source web-fingerprint-analytic/bin/activate
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
+
+# Start PHP Backend
+php -S localhost:8000 index.html
+

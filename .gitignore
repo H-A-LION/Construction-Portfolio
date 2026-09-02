@@ -15,4 +15,7 @@
 #Data samples
 /data-samples
 
+# analytics
+/analytics-service/web-fingerprint-analytic
+
 notes.txt

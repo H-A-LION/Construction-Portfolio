@@ -509,3 +509,30 @@
     }
   }
 }
+// Loading spinner animation
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  color: $color-text-muted;
+  
+  svg {
+    color: $color-primary;
+  }
+}

@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import ContentEditor from '../components/ContentEditor';
 import { fetchContent, saveContent } from '../api/contentApi';
+import { GoArrowLeft, GoCheck, GoX, GoSync } from "react-icons/go";
+import { FaRegSave } from "react-icons/fa";
 
 const Dashboard = ({ onLogout, onBack }) => {
   const [activeSection, setActiveSection] = useState('hero');
@@ -141,7 +143,7 @@ const Dashboard = ({ onLogout, onBack }) => {
         <div className="dashboard-header">
           <div className="header-left">
             <button className="back-btn" onClick={onBack}>
-              <i className="fas fa-arrow-left"></i>
+              <GoArrowLeft size={18} />
               Back to Dashboard
             </button>
             <h2>
@@ -162,12 +164,12 @@ const Dashboard = ({ onLogout, onBack }) => {
             >
               {loading ? (
                 <>
-                  <i className="fas fa-spinner fa-spin"></i>
+                  <GoSync className="spinning" size={18} />
                   Saving...
                 </>
               ) : (
                 <>
-                  <i className="fas fa-save"></i>
+                  <FaRegSave size={18} />
                   Save Changes
                 </>
               )}
@@ -178,7 +180,7 @@ const Dashboard = ({ onLogout, onBack }) => {
         <div className="editor-container">
           {isLoading ? (
             <div className="loading-spinner">
-              <i className="fas fa-spinner fa-spin"></i>
+              <GoSync className="spinning" size={32} />
               Loading content...
             </div>
           ) : (

@@ -4,7 +4,22 @@
 @import './sidebar';
 @import './variables';
 
-// Admin toggle button (optional)
+// Global responsive settings
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Admin toggle button
 .admin-toggle {
   position: fixed;
   bottom: 30px;
@@ -37,6 +52,37 @@
   }
 }
 
-// Breakpoints
-$breakpoint-tablet: 768px;
-$breakpoint-mobile: 480px;
+// Responsive breakpoints
+@media (max-width: $breakpoint-tablet) {
+  .dashboard-main {
+    padding: 20px !important;
+  }
+  
+  .dashboard-topbar {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch !important;
+    
+    h2 {
+      font-size: 20px !important;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .dashboard-main {
+    padding: 16px !important;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .dashboard-actions {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .dashboard-topbar h2 {
+    font-size: 18px !important;
+  }
+}
