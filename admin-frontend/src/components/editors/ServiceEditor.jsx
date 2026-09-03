@@ -2,13 +2,16 @@
 import React, { useState, useEffect } from 'react';
 import InputField from '../common/InputField';
 import TextAreaField from '../common/TextAreaField';
+import ImageUpload from '../common/ImageUpload';
 import { FaTrash, FaPlus } from "react-icons/fa";
 
 const ServiceEditor = ({ data, onChange }) => {
   const defaultData = {
     title: '',
     subtitle: '',
-    services: []
+    services: [],
+    background_image: null,
+    background_image_alt: ''
   };
 
   const [formData, setFormData] = useState({ ...defaultData, ...data });
@@ -25,6 +28,23 @@ const ServiceEditor = ({ data, onChange }) => {
 
   const handleChange = (field, value) => {
     const updated = { ...formData, [field]: value };
+    setFormData(updated);
+    onChange(updated);
+  };
+
+  const handleImageChange = (path, filename, uploadResult) => {
+    const updated = { 
+      ...formData, 
+      background_image: path,
+      background_image_filename: filename,
+      background_image_upload: uploadResult
+    };
+    setFormData(updated);
+    onChange(updated);
+  };
+
+  const handleAltTextChange = (value) => {
+    const updated = { ...formData, background_image_alt: value };
     setFormData(updated);
     onChange(updated);
   };
@@ -57,6 +77,17 @@ const ServiceEditor = ({ data, onChange }) => {
       <h3>Services Section Content</h3>
       
       <div className="editor-grid">
+        <ImageUpload
+          section="services"
+          field="background_image"
+          currentImage={formData.background_image}
+          onImageChange={handleImageChange}
+          label="Background Image"
+          altText={formData.background_image_alt || ''}
+          onAltTextChange={handleAltTextChange}
+          imageMapping={formData.image_mapping || {}}
+        />
+
         <InputField
           label="Section Title"
           value={formData.title}

@@ -2,41 +2,71 @@
 import React, { useState, useEffect } from 'react';
 import './index.scss';
 import Login from './pages/Login';
+import ContentManager from './pages/ContentManager';
 import Dashboard from './pages/Dashboard';
-import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentPage, setCurrentPage] = useState('login');
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Check if user is already logged in
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
+    const user = localStorage.getItem('user');
+    
+    console.log('Checking auth - Token:', token ? 'exists' : 'none');
+    console.log('Checking auth - User:', user ? 'exists' : 'none');
+    
+    if (token && user) {
       setIsAuthenticated(true);
-      setCurrentPage('dashboard'); // Default to dashboard view
+      setCurrentPage('dashboard'); // Always go to dashboard (stats overview) first
+      console.log('User authenticated, redirecting to dashboard');
+    } else {
+      // Clear any invalid session data
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      setCurrentPage('login');
+      console.log('No valid session, redirecting to login');
     }
+    setIsLoading(false);
   }, []);
 
-  const handleLogin = () => {
+  const handleLogin = (userData) => {
+    console.log('Login successful, setting session');
     setIsAuthenticated(true);
-    setCurrentPage('dashboard'); // Show admin dashboard first
+    setCurrentPage('dashboard'); // Always go to dashboard (stats overview) after login
   };
 
   const handleLogout = () => {
+    console.log('Logging out, clearing session');
     setIsAuthenticated(false);
     setCurrentPage('login');
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    // Also clear any other stored data
+    sessionStorage.clear();
   };
 
-  const navigateToAdmin = () => {
-    setCurrentPage('admin');
+  const navigateToContentManager = () => {
+    console.log('Navigating to Content Manager');
+    setCurrentPage('contentmanager');
   };
 
   const navigateToDashboard = () => {
+    console.log('Navigating to Dashboard');
     setCurrentPage('dashboard');
   };
+
+  if (isLoading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner">
+          <i className="fas fa-spinner fa-spin"></i>
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return <Login onLogin={handleLogin} />;
@@ -44,23 +74,29 @@ function App() {
 
   if (currentPage === 'dashboard') {
     return (
-      <AdminDashboard 
+      <Dashboard 
         onLogout={handleLogout} 
-        onNavigateToAdmin={navigateToAdmin}
+        onNavigateToContentManager={navigateToContentManager}
       />
     );
   }
 
-  if (currentPage === 'admin') {
+  if (currentPage === 'contentmanager') {
     return (
-      <Dashboard 
+      <ContentManager 
         onLogout={handleLogout}
         onBack={navigateToDashboard} 
       />
     );
   }
 
-  return null;
+  // Fallback to dashboard
+  return (
+    <Dashboard 
+      onLogout={handleLogout} 
+      onNavigateToContentManager={navigateToContentManager}
+    />
+  );
 }
 
 export default App;

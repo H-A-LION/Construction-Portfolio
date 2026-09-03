@@ -11,22 +11,29 @@ const Login = ({ onLogin }) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError('');
-  setLoading(true);
+    e.preventDefault();
+    setError('');
+    setLoading(true);
 
-  try {
-    console.log('Attempting login with:', credentials);
-    const result = await login(credentials.email, credentials.password);
-    console.log('Login successful, result:', result);
-    onLogin();
-  } catch (err) {
-    console.error('Login error in component:', err);
-    setError(err.message || 'Login failed. Please check your credentials and try again.');
-  } finally {
-    setLoading(false);
-  }
-};
+    try {
+      console.log('Attempting login with:', credentials.email);
+      const result = await login(credentials.email, credentials.password);
+      console.log('Login successful, result:', result);
+      
+      // Store the user data
+      if (result && result.user) {
+        localStorage.setItem('user', JSON.stringify(result.user));
+      }
+      
+      // Call the onLogin callback
+      onLogin(result);
+    } catch (err) {
+      console.error('Login error in component:', err);
+      setError(err.message || 'Login failed. Please check your credentials and try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     setCredentials({

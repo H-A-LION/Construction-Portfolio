@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import InputField from '../common/InputField';
 import TextAreaField from '../common/TextAreaField';
+import ImageUpload from '../common/ImageUpload';
 import { FaTrash, FaPlus } from "react-icons/fa";
 
 const ProjectEditor = ({ data, onChange }) => {
@@ -37,6 +38,30 @@ const ProjectEditor = ({ data, onChange }) => {
     onChange(updated);
   };
 
+  const handleProjectImageChange = (index, path, filename, uploadResult) => {
+    const updatedProjects = [...formData.projects];
+    updatedProjects[index] = { 
+      ...updatedProjects[index], 
+      project_image: path,
+      project_image_filename: filename,
+      project_image_upload: uploadResult
+    };
+    const updated = { ...formData, projects: updatedProjects };
+    setFormData(updated);
+    onChange(updated);
+  };
+
+  const handleProjectAltTextChange = (index, value) => {
+    const updatedProjects = [...formData.projects];
+    updatedProjects[index] = { 
+      ...updatedProjects[index], 
+      project_image_alt: value 
+    };
+    const updated = { ...formData, projects: updatedProjects };
+    setFormData(updated);
+    onChange(updated);
+  };
+
   const addTag = (projectIndex, tag) => {
     const updatedProjects = [...formData.projects];
     if (!updatedProjects[projectIndex].tags) {
@@ -57,7 +82,14 @@ const ProjectEditor = ({ data, onChange }) => {
   };
 
   const addProject = () => {
-    const updatedProjects = [...formData.projects, { title: '', location: '', category: '', tags: [] }];
+    const updatedProjects = [...formData.projects, { 
+      title: '', 
+      location: '', 
+      category: '', 
+      tags: [],
+      project_image: null,
+      project_image_alt: ''
+    }];
     const updated = { ...formData, projects: updatedProjects };
     setFormData(updated);
     onChange(updated);
@@ -104,6 +136,19 @@ const ProjectEditor = ({ data, onChange }) => {
           {formData.projects.map((project, index) => (
             <div key={index} className="project-item">
               <div className="project-fields">
+                <ImageUpload
+                  section="projects"
+                  field={`project_image_${index}`}
+                  currentImage={project.project_image}
+                  onImageChange={(path, filename, uploadResult) => 
+                    handleProjectImageChange(index, path, filename, uploadResult)
+                  }
+                  label="Project Image"
+                  altText={project.project_image_alt || ''}
+                  onAltTextChange={(value) => handleProjectAltTextChange(index, value)}
+                  imageMapping={project.image_mapping || {}}
+                />
+
                 <InputField
                   label="Project Title"
                   value={project.title}

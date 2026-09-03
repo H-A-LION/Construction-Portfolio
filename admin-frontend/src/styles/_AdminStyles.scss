@@ -1,4 +1,4 @@
-// src/admin/pages/AdminStyles.scss
+// admin-frontend/src/styles/_AdminStyles.scss
 @import './variables';
 
 // Editor Styles
@@ -21,6 +21,8 @@
 // Form Component Styles
 .input-field,
 .textarea-field {
+  margin-bottom: 8px;
+
   label {
     display: block;
     font-weight: 500;
@@ -38,11 +40,16 @@
     font-size: 14px;
     transition: all 0.3s;
     background: white;
+    color: $color-text-dark;
 
     &:focus {
       outline: none;
       border-color: $color-primary;
       box-shadow: 0 0 0 3px $color-primary-focus-shadow;
+    }
+
+    &::placeholder {
+      color: $color-text-muted;
     }
   }
 
@@ -58,6 +65,8 @@
 .services-editor,
 .team-editor,
 .projects-editor {
+  margin-top: 12px;
+  
   .stats-header,
   .features-header,
   .services-header,
@@ -116,11 +125,21 @@
   .project-fields {
     flex: 1;
     display: grid;
-    grid-template-columns: 1fr 1fr;
     gap: 12px;
   }
 
-  .service-fields,
+  .stat-fields {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .feature-fields {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .service-fields {
+    grid-template-columns: 1fr 1fr;
+  }
+
   .member-fields {
     grid-template-columns: 1fr 1fr;
   }
@@ -138,6 +157,9 @@
     cursor: pointer;
     transition: all 0.3s;
     font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover {
       background: $remove-button-background-hover;
@@ -240,275 +262,6 @@
   }
 }
 
-// Dashboard Styles
-.admin-dashboard-wrapper {
-  display: flex;
-  min-height: 100vh;
-  background: $color-background;
-}
-
-.dashboard-sidebar {
-  width: 280px;
-  min-height: 100vh;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  border-right: 1px solid $color-border;
-  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.05);
-}
-
-.dashboard-main {
-  flex: 1;
-  margin-left: 280px;
-  padding: 30px 40px;
-
-  .dashboard-topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid $color-border;
-
-    h2 {
-      font-size: 24px;
-      color: $color-text-dark;
-
-      i {
-        color: $color-primary;
-        margin-right: 12px;
-      }
-    }
-
-    .admin-btn-primary {
-      padding: 10px 24px;
-      background: $color-primary;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-
-      &:hover {
-        background: $color-primary-hover;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px $color-primary-button-shadow;
-      }
-    }
-  }
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
-  margin-bottom: 40px;
-
-  .stat-card {
-    background: white;
-    padding: 24px;
-    border-radius: 16px;
-    border: 1px solid $color-border;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    transition: all 0.3s;
-
-    &:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-    }
-
-    .stat-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-    }
-
-    .stat-info {
-      h3 {
-        font-size: 28px;
-        font-weight: 700;
-        color: $color-text-dark;
-        margin: 0;
-      }
-
-      p {
-        color: $color-text-muted;
-        font-size: 14px;
-        margin: 4px 0 0;
-      }
-    }
-  }
-}
-
-.dashboard-actions {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-
-  .action-card {
-    background: white;
-    padding: 30px;
-    border-radius: 16px;
-    border: 1px solid $color-border;
-    text-align: center;
-    transition: all 0.3s;
-
-    &:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-    }
-
-    i {
-      font-size: 36px;
-      color: $color-primary;
-      margin-bottom: 12px;
-    }
-
-    h4 {
-      font-size: 18px;
-      color: $color-text-dark;
-      margin-bottom: 8px;
-    }
-
-    p {
-      color: $color-text-muted;
-      font-size: 14px;
-      margin-bottom: 16px;
-    }
-
-    .action-btn {
-      padding: 8px 20px;
-      background: $color-primary;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.3s;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-
-      &:hover:not(:disabled) {
-        background: $color-primary-hover;
-        transform: translateY(-2px);
-      }
-
-      &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
-    }
-  }
-}
-
-.back-btn {
-  background: none;
-  border: none;
-  color: $color-primary;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 0;
-  margin-bottom: 12px;
-
-  &:hover {
-    color: $color-primary-hover;
-  }
-
-  i {
-    font-size: 14px;
-  }
-}
-
-.header-left {
-  display: flex;
-  flex-direction: column;
-}
-
-@media (max-width: $breakpoint-tablet) {
-  .dashboard-sidebar {
-    width: 80px;
-
-    .sidebar-logo span,
-    .sidebar-subtitle,
-    .sidebar-item span {
-      display: none;
-    }
-
-    .sidebar-item {
-      justify-content: center;
-      padding: 12px;
-
-      i {
-        font-size: 20px;
-        margin: 0;
-      }
-    }
-  }
-
-  .dashboard-main {
-    margin-left: 80px;
-    padding: 20px;
-
-    .dashboard-topbar {
-      flex-direction: column;
-      gap: 16px;
-      align-items: stretch;
-    }
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: $breakpoint-mobile) {
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .dashboard-actions {
-    grid-template-columns: 1fr;
-  }
-
-  .stat-editor-item,
-  .feature-item,
-  .service-item,
-  .member-item,
-  .project-item {
-    flex-direction: column;
-
-    .stat-fields,
-    .feature-fields,
-    .service-fields,
-    .member-fields,
-    .project-fields {
-      grid-template-columns: 1fr;
-    }
-
-    .remove-btn {
-      align-self: flex-end;
-    }
-  }
-}
 // Loading spinner animation
 .spinning {
   animation: spin 1s linear infinite;
@@ -534,5 +287,299 @@
   
   svg {
     color: $color-primary;
+  }
+}
+
+// Image Upload Styles
+.image-upload-container {
+  margin-bottom: 20px;
+
+  .image-upload-label {
+    display: block;
+    font-weight: 500;
+    color: $color-text;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .image-upload-wrapper {
+    border: 2px dashed $color-border-input;
+    border-radius: 10px;
+    padding: 20px;
+    transition: all 0.3s;
+    background: $color-background-muted;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      border-color: $color-primary;
+    }
+  }
+
+  .image-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 20px;
+    width: 100%;
+    color: $color-text-muted;
+
+    svg {
+      color: $color-primary;
+      opacity: 0.6;
+    }
+
+    p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    span {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    .spinning {
+      animation: spin 1s linear infinite;
+    }
+  }
+
+  .image-preview {
+    position: relative;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .image-actions {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      display: flex;
+      gap: 8px;
+
+      .image-btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        &.change-btn {
+          background: $color-dark;
+          color: white;
+
+          &:hover:not(:disabled) {
+            background: $color-dark-hover;
+            transform: translateY(-2px);
+          }
+        }
+
+        &.delete-btn {
+          background: $remove-button-background;
+          color: $remove-button-color;
+
+          &:hover:not(:disabled) {
+            background: $remove-button-background-hover;
+            transform: translateY(-2px);
+          }
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none !important;
+        }
+
+        .spinning {
+          animation: spin 1s linear infinite;
+        }
+      }
+    }
+  }
+
+  .image-alt-input {
+    margin-top: 12px;
+
+    label {
+      display: block;
+      font-weight: 500;
+      color: $color-text;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid $color-border-input;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.3s;
+      background: white;
+
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+        box-shadow: 0 0 0 3px $color-primary-focus-shadow;
+      }
+    }
+  }
+}
+
+// Dashboard container styles (for the content manager)
+.admin-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: $color-background;
+}
+
+.dashboard-content {
+  flex: 1;
+  margin-left: 280px;
+  padding: 30px 40px;
+
+  @media (max-width: $breakpoint-tablet) {
+    margin-left: 0;
+    padding: 20px;
+    padding-top: 80px;
+  }
+
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid $color-border;
+
+    @media (max-width: $breakpoint-mobile) {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 16px;
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+
+      .back-btn {
+        background: none;
+        border: none;
+        color: $color-primary;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 0;
+        margin-bottom: 4px;
+
+        &:hover {
+          color: $color-primary-hover;
+        }
+      }
+    }
+
+    h2 {
+      font-size: 24px;
+      color: $color-text-dark;
+
+      i {
+        color: $color-primary;
+        margin-right: 12px;
+      }
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      @media (max-width: $breakpoint-mobile) {
+        flex-wrap: wrap;
+      }
+
+      .save-message {
+        font-size: 14px;
+        font-weight: 500;
+
+        &.success {
+          color: $color-success;
+        }
+
+        &.error {
+          color: $color-error;
+        }
+
+        &.warning {
+          color: $color-primary;
+        }
+      }
+
+      .save-btn {
+        padding: 10px 24px;
+        background: $color-dark;
+        color: $color-white;
+        border: none;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        &:hover:not(:disabled) {
+          background: $color-dark-hover;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px $shadow-button;
+        }
+
+        &:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+          transform: none;
+        }
+      }
+    }
+  }
+
+  .editor-container {
+    background: $color-background-light;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 20px $shadow-light;
+
+    @media (max-width: $breakpoint-mobile) {
+      padding: 16px;
+    }
+  }
+}
+// Add to _AdminStyles.scss
+.about-images-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  
+  @media (max-width: $breakpoint-mobile) {
+    grid-template-columns: 1fr;
   }
 }

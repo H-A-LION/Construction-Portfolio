@@ -22,7 +22,6 @@ export const fetchContent = async (section) => {
     }
     
     const result = await response.json();
-    // Handle both string and object data
     const data = typeof result.data === 'string' ? JSON.parse(result.data) : result.data;
     return data;
   } catch (error) {
@@ -51,10 +50,13 @@ export const fetchAllContent = async () => {
 
 export const saveContent = async (section, data) => {
   try {
+    // Create a clean copy of data without image files
+    const cleanData = { ...data };
+    
     const response = await fetch(`${API_URL}/content/${section}`, {
       method: 'PUT',
       headers: headers(),
-      body: JSON.stringify({ data })
+      body: JSON.stringify({ data: cleanData })
     });
     
     if (!response.ok) {
@@ -62,11 +64,64 @@ export const saveContent = async (section, data) => {
     }
     
     const result = await response.json();
-    // Handle both string and object data
     const responseData = typeof result.data === 'string' ? JSON.parse(result.data) : result.data;
     return responseData;
   } catch (error) {
     console.error('Error saving content:', error);
+    throw error;
+  }
+};
+
+// admin-frontend/src/api/contentApi.js - Updated upload function
+export const uploadImage = async (section, file, field = 'hero_image') => {
+  try {
+    const token = getToken();
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('field', field);
+    formData.append('original_name', file.name); // Send original filename
+    
+    const response = await fetch(`${API_URL}/content/${section}/upload-image`, {
+      method: 'POST',
+      headers: {
+        ...(token && { 'Authorization': `Bearer ${token}` })
+      },
+      body: formData
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to upload image');
+    }
+    
+    const result = await response.json();
+    return result.data;
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    throw error;
+  }
+};
+
+export const deleteImage = async (section, field = 'hero_image') => {
+  try {
+    const token = getToken();
+    
+    const response = await fetch(`${API_URL}/content/${section}/delete-image`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { 'Authorization': `Bearer ${token}` })
+      },
+      body: JSON.stringify({ field })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to delete image');
+    }
+    
+    const result = await response.json();
+    return result.data;
+  } catch (error) {
+    console.error('Error deleting image:', error);
     throw error;
   }
 };
@@ -79,14 +134,7 @@ export const login = async (email, password) => {
       body: JSON.stringify({ email, password })
     });
     
-    // Log the response status for debugging
-    console.log('Login response status:', response.status);
-    
-    // Get the response text first
     const responseText = await response.text();
-    console.log('Login response text:', responseText);
-    
-    // Try to parse as JSON
     let result;
     try {
       result = JSON.parse(responseText);
@@ -99,7 +147,6 @@ export const login = async (email, password) => {
       throw new Error(result.message || result.error || 'Invalid credentials');
     }
     
-    // Fix: Handle the response structure correctly
     if (result.success && result.data) {
       const token = result.data.token;
       const user = result.data.user;
@@ -107,7 +154,6 @@ export const login = async (email, password) => {
       if (token) {
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
-        console.log('Login successful, token stored');
         return result.data;
       } else {
         throw new Error('No token received from server');
@@ -133,4 +179,4 @@ export const getCurrentUser = () => {
 
 export const isAuthenticated = () => {
   return !!localStorage.getItem('token');
-}
+};

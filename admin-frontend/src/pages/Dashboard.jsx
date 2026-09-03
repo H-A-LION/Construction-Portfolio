@@ -1,195 +1,183 @@
-// admin-frontend/src/pages/Dashboard.jsx
+// admin-frontend/src/pages/Dashboard.jsx (was AdminDashboard.jsx)
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../components/Sidebar';
-import ContentEditor from '../components/ContentEditor';
-import { fetchContent, saveContent } from '../api/contentApi';
-import { GoArrowLeft, GoCheck, GoX, GoSync } from "react-icons/go";
-import { FaRegSave } from "react-icons/fa";
+import { 
+  GoSignOut, 
+  GoHome, 
+  GoGear, 
+  GoTasklist, 
+  GoPeople, 
+  GoTools,
+  GoX,
+  GoArrowRight,
+  GoClock
+} from "react-icons/go";
+import { FaBars } from "react-icons/fa";
 
-const Dashboard = ({ onLogout, onBack }) => {
-  const [activeSection, setActiveSection] = useState('hero');
-  const [content, setContent] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [saveMessage, setSaveMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-
-  const getDefaultContent = (section) => {
-    const defaults = {
-      hero: {
-        badge: '2026 Award Winner',
-        title: 'Built with precision & integrity',
-        description: 'From concept to completion — we deliver commercial, residential, and industrial projects that stand the test of time.',
-        stats: [
-          { number: '120+', label: 'Projects Completed' },
-          { number: '98%', label: 'Client Satisfaction' },
-          { number: '15+', label: 'Years Experience' }
-        ]
-      },
-      about: {
-        tag: 'About Us',
-        title: 'Building Excellence Since 2010',
-        description: 'BuildPort is a full-service construction company dedicated to delivering superior quality, innovation, and reliability.',
-        features: [
-          { title: 'Quality Assurance', description: 'Rigorous quality control at every stage' },
-          { title: 'On-Time Delivery', description: 'Projects completed within schedule' },
-          { title: 'Sustainable Building', description: 'Eco-friendly materials and practices' }
-        ]
-      },
-      services: {
-        title: 'Our Services',
-        subtitle: 'Comprehensive construction solutions tailored to your project needs',
-        services: [
-          { icon: 'fa-hard-hat', title: 'General Contracting', description: 'Full-service construction management from ground-up to completion.' },
-          { icon: 'fa-pencil-ruler', title: 'Design & Build', description: 'Integrated design and construction services for seamless delivery.' },
-          { icon: 'fa-house-chimney', title: 'Residential Construction', description: 'Custom homes, renovations, and residential development projects.' }
-        ]
-      },
-      team: {
-        title: 'Our Team',
-        subtitle: 'Meet the experts behind our award-winning projects',
-        members: [
-          { name: 'David Martinez', role: 'CEO & Founder', experience: '25+ years' },
-          { name: 'Sarah Johnson', role: 'Project Director', experience: '18 years' },
-          { name: 'Michael Chen', role: 'Lead Architect', experience: '15 years' }
-        ]
-      },
-      projects: {
-        title: 'Featured Projects',
-        subtitle: 'Explore our portfolio of exceptional construction projects',
-        projects: [
-          { title: 'Riverside Tower', location: 'Austin, TX', category: 'Commercial', tags: ['High-rise', 'LEED Certified'] },
-          { title: 'Willow Creek Estate', location: 'Napa Valley, CA', category: 'Residential', tags: ['Luxury', 'Eco-Friendly'] }
-        ]
-      },
-      contact: {
-        title: "Let's Build Together",
-        description: 'Have a project in mind? Get in touch with our team for a free consultation and quote.',
-        phone: '+1 (555) 123-4567',
-        email: 'info@buildport.com',
-        address: '123 Construction Ave, Suite 200'
-      }
-    };
-    return defaults[section] || {};
-  };
+const Dashboard = ({ onLogout, onNavigateToContentManager }) => {
+  const [stats, setStats] = useState({
+    projects: 0,
+    team: 0,
+    services: 0,
+    totalContent: 0
+  });
+  const [loading, setLoading] = useState(true);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   useEffect(() => {
-    const loadContent = async () => {
-      setIsLoading(true);
+    const loadStats = async () => {
       try {
-        const data = await fetchContent(activeSection);
-        setContent(prev => ({
-          ...prev,
-          [activeSection]: data
-        }));
+        // You can fetch real stats from your API here
+        // For now using demo data
+        setStats({
+          projects: 12,
+          team: 8,
+          services: 6,
+          totalContent: 6
+        });
       } catch (error) {
-        console.error('Error loading content:', error);
-        setContent(prev => ({
-          ...prev,
-          [activeSection]: getDefaultContent(activeSection)
-        }));
-        setSaveMessage('⚠️ Using default content - API connection issue');
-        setTimeout(() => setSaveMessage(''), 4000);
+        console.error('Error loading stats:', error);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
-    loadContent();
-  }, [activeSection]);
+    loadStats();
+  }, []);
 
-  const handleContentChange = (section, data) => {
-    setContent(prev => ({
-      ...prev,
-      [section]: data
-    }));
+  const toggleSidebar = () => {
+    setIsMobileOpen(!isMobileOpen);
   };
 
-  const handleSave = async () => {
-    setLoading(true);
-    setSaveMessage('');
-    
-    try {
-      await saveContent(activeSection, content[activeSection]);
-      setSaveMessage('✅ Content saved successfully!');
-      setTimeout(() => setSaveMessage(''), 3000);
-    } catch (error) {
-      setSaveMessage('❌ Error saving content. Please try again.');
-      setTimeout(() => setSaveMessage(''), 3000);
-    } finally {
-      setLoading(false);
+  const closeSidebar = () => {
+    setIsMobileOpen(false);
+  };
+
+  const statCards = [
+    {
+      title: 'Total Content Sections',
+      value: stats.totalContent,
+      icon: 'fa-layer-group',
+      color: '#f59e0b',
+      bgColor: '#fef3c7'
+    },
+    {
+      title: 'Projects',
+      value: stats.projects,
+      icon: 'fa-tasks',
+      color: '#3b82f6',
+      bgColor: '#dbeafe'
+    },
+    {
+      title: 'Team Members',
+      value: stats.team,
+      icon: 'fa-users',
+      color: '#8b5cf6',
+      bgColor: '#ede9fe'
+    },
+    {
+      title: 'Services',
+      value: stats.services,
+      icon: 'fa-wrench',
+      color: '#10b981',
+      bgColor: '#d1fae5'
     }
-  };
-
-  const sections = [
-    { id: 'hero', label: 'Hero Section', icon: 'fa-star' },
-    { id: 'about', label: 'About Section', icon: 'fa-info-circle' },
-    { id: 'services', label: 'Services', icon: 'fa-wrench' },
-    { id: 'projects', label: 'Projects', icon: 'fa-tasks' },
-    { id: 'team', label: 'Team', icon: 'fa-users' },
-    { id: 'contact', label: 'Contact', icon: 'fa-envelope' }
   ];
 
-  const currentSection = sections.find(s => s.id === activeSection);
-
   return (
-    <div className="admin-dashboard">
-      <Sidebar 
-        sections={sections} 
-        activeSection={activeSection}
-        onSectionChange={setActiveSection}
-        onLogout={onLogout}
-      />
-      
-      <div className="dashboard-content">
-        <div className="dashboard-header">
-          <div className="header-left">
-            <button className="back-btn" onClick={onBack}>
-              <GoArrowLeft size={18} />
-              Back to Dashboard
-            </button>
-            <h2>
-              <i className={`fas ${currentSection?.icon}`}></i>
-              Edit {currentSection?.label}
-            </h2>
+    <div className="admin-dashboard-wrapper">
+      {/* Mobile Toggle Button */}
+      <button className="sidebar-toggle" onClick={toggleSidebar}>
+        {isMobileOpen ? <GoX size={24} /> : <FaBars size={24} />}
+      </button>
+
+      {/* Overlay for mobile */}
+      {isMobileOpen && <div className="sidebar-overlay" onClick={closeSidebar}></div>}
+
+      {/* Sidebar */}
+      <div className={`dashboard-sidebar ${isMobileOpen ? 'mobile-open' : ''}`}>
+        <div className="sidebar-header">
+          <div className="sidebar-logo">
+            <i className="fas fa-hard-hat"></i>
+            <span>BuildPort</span>
           </div>
-          <div className="header-actions">
-            {saveMessage && (
-              <span className={`save-message ${saveMessage.includes('✅') ? 'success' : 'error'}`}>
-                {saveMessage}
-              </span>
-            )}
-            <button 
-              className="save-btn" 
-              onClick={handleSave}
-              disabled={loading || isLoading}
-            >
-              {loading ? (
-                <>
-                  <GoSync className="spinning" size={18} />
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <FaRegSave size={18} />
-                  Save Changes
-                </>
-              )}
-            </button>
-          </div>
+          <p className="sidebar-subtitle">Admin Panel</p>
         </div>
 
-        <div className="editor-container">
-          {isLoading ? (
-            <div className="loading-spinner">
-              <GoSync className="spinning" size={32} />
-              Loading content...
+        <nav className="sidebar-nav">
+          <button className="sidebar-item active">
+            <GoHome size={20} />
+            <span>Dashboard</span>
+          </button>
+          <button className="sidebar-item" onClick={() => {
+            onNavigateToContentManager();
+            closeSidebar();
+          }}>
+            <GoGear size={20} />
+            <span>Content Manager</span>
+          </button>
+        </nav>
+
+        <div className="sidebar-footer">
+          <button className="sidebar-item logout" onClick={onLogout}>
+            <GoSignOut size={20} />
+            <span>Logout</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="dashboard-main">
+        <div className="dashboard-topbar">
+          <h2>
+            <i className="fas fa-chart-pie"></i>
+            Dashboard Overview
+          </h2>
+          <button className="admin-btn-primary" onClick={onNavigateToContentManager}>
+            <GoGear size={18} />
+            Manage Content
+          </button>
+        </div>
+
+        {/* Stats Grid - These were hidden before */}
+        <div className="stats-grid">
+          {statCards.map((stat, index) => (
+            <div key={index} className="stat-card">
+              <div className="stat-icon" style={{ background: stat.bgColor, color: stat.color }}>
+                <i className={`fas ${stat.icon}`}></i>
+              </div>
+              <div className="stat-info">
+                <h3>{loading ? '...' : stat.value}</h3>
+                <p>{stat.title}</p>
+              </div>
             </div>
-          ) : (
-            <ContentEditor 
-              section={activeSection}
-              content={content[activeSection] || {}}
-              onContentChange={(data) => handleContentChange(activeSection, data)}
-            />
-          )}
+          ))}
+        </div>
+
+        {/* Action Cards - These were hidden before */}
+        <div className="dashboard-actions">
+          <div className="action-card" onClick={onNavigateToContentManager}>
+            <GoGear size={36} />
+            <h4>Content Management</h4>
+            <p>Edit all website content sections including images</p>
+            <button className="action-btn">
+              Go to Editor <GoArrowRight />
+            </button>
+          </div>
+          <div className="action-card">
+            <GoClock size={36} />
+            <h4>Settings</h4>
+            <p>Configure site settings and preferences</p>
+            <button className="action-btn" disabled>
+              Coming Soon <GoClock />
+            </button>
+          </div>
+          <div className="action-card">
+            <GoTasklist size={36} />
+            <h4>Projects</h4>
+            <p>Manage project portfolio</p>
+            <button className="action-btn" onClick={onNavigateToContentManager}>
+              Manage <GoArrowRight />
+            </button>
+          </div>
         </div>
       </div>
     </div>

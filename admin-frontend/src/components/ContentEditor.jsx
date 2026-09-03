@@ -1,8 +1,11 @@
-// src/admin/components/ContentEditor.jsx
+// admin-frontend/src/components/ContentEditor.jsx
 import React from 'react';
 import HeroEditor from './editors/HeroEditor';
 import AboutEditor from './editors/AboutEditor';
 import ContactEditor from './editors/ContactEditor';
+import ServiceEditor from './editors/ServiceEditor';
+import TeamEditor from './editors/TeamEditor';
+import ProjectEditor from './editors/ProjectEditor';
 
 const ContentEditor = ({ section, content, onContentChange }) => {
   const renderEditor = () => {
@@ -11,6 +14,12 @@ const ContentEditor = ({ section, content, onContentChange }) => {
         return <HeroEditor data={content} onChange={onContentChange} />;
       case 'about':
         return <AboutEditor data={content} onChange={onContentChange} />;
+      case 'services':
+        return <ServiceEditor data={content} onChange={onContentChange} />;
+      case 'team':
+        return <TeamEditor data={content} onChange={onContentChange} />;
+      case 'projects':
+        return <ProjectEditor data={content} onChange={onContentChange} />;
       case 'contact':
         return <ContactEditor data={content} onChange={onContentChange} />;
       default:

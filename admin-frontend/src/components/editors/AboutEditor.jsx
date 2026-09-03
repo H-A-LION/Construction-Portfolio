@@ -1,21 +1,24 @@
-// src/admin/components/editors/AboutEditor.jsx
-import React, { useState,useEffect } from 'react';
+// admin-frontend/src/components/editors/AboutEditor.jsx
+import React, { useState, useEffect } from 'react';
 import InputField from '../common/InputField';
 import TextAreaField from '../common/TextAreaField';
+import ImageUpload from '../common/ImageUpload';
 import { FaTrash, FaPlus } from "react-icons/fa";
 
 const AboutEditor = ({ data, onChange }) => {
-    // Initialize with default values to prevent undefined errors
   const defaultData = {
     tag: '',
     title: '',
     description: '',
-    features: []
+    features: [],
+    about_image_1: null,
+    about_image_1_alt: '',
+    about_image_2: null,
+    about_image_2_alt: ''
   };
 
-  const [formData, setFormData] = useState({...defaultData, ...data});
+  const [formData, setFormData] = useState({ ...defaultData, ...data });
 
-    // Update formData when data prop changes
   useEffect(() => {
     if (data) {
       setFormData(prev => ({
@@ -32,8 +35,25 @@ const AboutEditor = ({ data, onChange }) => {
     onChange(updated);
   };
 
+  const handleImageChange = (field, path, filename, uploadResult) => {
+    const updated = { 
+      ...formData, 
+      [field]: path,
+      [`${field}_filename`]: filename,
+      [`${field}_upload`]: uploadResult
+    };
+    setFormData(updated);
+    onChange(updated);
+  };
+
+  const handleAltTextChange = (field, value) => {
+    const updated = { ...formData, [`${field}_alt`]: value };
+    setFormData(updated);
+    onChange(updated);
+  };
+
   const handleFeatureChange = (index, field, value) => {
-    const updatedFeatures = [...formData.features];
+    const updatedFeatures = [...(formData.features || [])];
     updatedFeatures[index] = { ...updatedFeatures[index], [field]: value };
     const updated = { ...formData, features: updatedFeatures };
     setFormData(updated);
@@ -41,15 +61,14 @@ const AboutEditor = ({ data, onChange }) => {
   };
 
   const addFeature = () => {
-    const updatedFeatures = [...formData.features, { title: '', description: '' }];
+    const updatedFeatures = [...(formData.features || []), { title: '', description: '' }];
     const updated = { ...formData, features: updatedFeatures };
     setFormData(updated);
     onChange(updated);
   };
 
   const removeFeature = (index) => {
-    const currentFeatures = formData.features || [];
-    const updatedFeatures = currentFeatures.filter((_, i) => i !== index);
+    const updatedFeatures = (formData.features || []).filter((_, i) => i !== index);
     const updated = { ...formData, features: updatedFeatures };
     setFormData(updated);
     onChange(updated);
@@ -60,23 +79,51 @@ const AboutEditor = ({ data, onChange }) => {
       <h3>About Section Content</h3>
       
       <div className="editor-grid">
+        <div className="about-images-grid">
+          <ImageUpload
+            section="about"
+            field="about_image_1"
+            currentImage={formData.about_image_1}
+            onImageChange={(path, filename, uploadResult) => 
+              handleImageChange('about_image_1', path, filename, uploadResult)
+            }
+            label="About Image 1"
+            altText={formData.about_image_1_alt || ''}
+            onAltTextChange={(value) => handleAltTextChange('about_image_1', value)}
+            imageMapping={formData.image_mapping || {}}
+          />
+
+          <ImageUpload
+            section="about"
+            field="about_image_2"
+            currentImage={formData.about_image_2}
+            onImageChange={(path, filename, uploadResult) => 
+              handleImageChange('about_image_2', path, filename, uploadResult)
+            }
+            label="About Image 2"
+            altText={formData.about_image_2_alt || ''}
+            onAltTextChange={(value) => handleAltTextChange('about_image_2', value)}
+            imageMapping={formData.image_mapping || {}}
+          />
+        </div>
+
         <InputField
           label="Tag Text"
-          value={formData.tag}
+          value={formData.tag || ''}
           onChange={(val) => handleChange('tag', val)}
           placeholder="About Us"
         />
 
         <InputField
           label="Title"
-          value={formData.title}
+          value={formData.title || ''}
           onChange={(val) => handleChange('title', val)}
           placeholder="Building Excellence Since 2010"
         />
 
         <TextAreaField
           label="Description"
-          value={formData.description}
+          value={formData.description || ''}
           onChange={(val) => handleChange('description', val)}
           placeholder="BuildPort is a full-service construction company..."
           rows={4}
@@ -90,18 +137,18 @@ const AboutEditor = ({ data, onChange }) => {
             </button>
           </div>
           
-          {formData.features.map((feature, index) => (
+          {(formData.features || []).map((feature, index) => (
             <div key={index} className="feature-item">
               <div className="feature-fields">
                 <InputField
                   label="Feature Title"
-                  value={feature.title}
+                  value={feature.title || ''}
                   onChange={(val) => handleFeatureChange(index, 'title', val)}
                   placeholder="Quality Assurance"
                 />
                 <InputField
                   label="Feature Description"
-                  value={feature.description}
+                  value={feature.description || ''}
                   onChange={(val) => handleFeatureChange(index, 'description', val)}
                   placeholder="Rigorous quality control at every stage"
                 />

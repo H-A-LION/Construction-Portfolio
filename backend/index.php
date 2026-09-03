@@ -1,4 +1,5 @@
 <?php
+// index.php
 require_once __DIR__ . '/vendor/autoload.php';
 
 // Load environment variables
@@ -29,28 +30,35 @@ if (preg_match('/^http:\/\/localhost:\d+$/', $origin)) {
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
 
+// Handle preflight requests
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
 // Initialize router
 $router = new App\Routes\Router();
 
 // Auth Routes
 $router->post("$api/auth/login", [$controllers . 'AuthController', 'login']);
 $router->post("$api/auth/register", [$controllers . 'AuthController', 'register']);
-
 $router->get("$api/auth/me", [$controllers . 'AuthController', 'me']);
 $router->post("$api/auth/logout", [$controllers . 'AuthController', 'logout']);
 $router->put("$api/auth/update", [$controllers . 'AuthController', 'updateProfile']);
 
-// Content Routes
+// Content Routes (Hero, About, Services, Contact)
 $router->get("$api/content/{section}", [$controllers . 'ContentController', 'get']);
-
 $router->get("$api/content/all", [$controllers . 'ContentController', 'getAll']);
 $router->put("$api/content/{section}", [$controllers . 'ContentController', 'update']);
 $router->get("$api/content/{section}/history", [$controllers . 'ContentController', 'history']);
 $router->post("$api/content/{section}/revert/{version}", [$controllers . 'ContentController', 'revert']);
-$router->post("$api/content/hero/upload-image", [$controllers . 'ContentController', 'uploadHeroImage']);
-$router->delete("$api/content/hero/delete-image", [$controllers . 'ContentController', 'deleteHeroImage']);
 
-// Project Routes
+// Image upload routes for content sections
+$router->post("$api/content/{section}/upload-image", [$controllers . 'ContentController', 'uploadImage']);
+$router->put("$api/content/{section}/upload-image", [$controllers . 'ContentController', 'uploadImage']);
+$router->delete("$api/content/{section}/delete-image", [$controllers . 'ContentController', 'deleteImage']);
+
+// Project Routes (separate table)
 $router->get("$api/projects", [$controllers . 'ProjectController', 'index']);
 $router->get("$api/projects/{id}", [$controllers . 'ProjectController', 'show']);
 $router->post("$api/projects", [$controllers . 'ProjectController', 'store']);
@@ -58,7 +66,7 @@ $router->put("$api/projects/{id}", [$controllers . 'ProjectController', 'update'
 $router->delete("$api/projects/{id}", [$controllers . 'ProjectController', 'delete']);
 $router->put("$api/projects/reorder", [$controllers . 'ProjectController', 'reorder']);
 
-// Service Routes
+// Service Routes (separate table)
 $router->get("$api/services", [$controllers . 'ServiceController', 'index']);
 $router->get("$api/services/{id}", [$controllers . 'ServiceController', 'show']);
 $router->post("$api/services", [$controllers . 'ServiceController', 'store']);
@@ -66,7 +74,7 @@ $router->put("$api/services/{id}", [$controllers . 'ServiceController', 'update'
 $router->delete("$api/services/{id}", [$controllers . 'ServiceController', 'delete']);
 $router->put("$api/services/reorder", [$controllers . 'ServiceController', 'reorder']);
 
-// Team Routes
+// Team Routes (separate table)
 $router->get("$api/team", [$controllers . 'TeamController', 'index']);
 $router->get("$api/team/{id}", [$controllers . 'TeamController', 'show']);
 $router->post("$api/team", [$controllers . 'TeamController', 'store']);
@@ -76,7 +84,6 @@ $router->put("$api/team/reorder", [$controllers . 'TeamController', 'reorder']);
 
 // Analytics Routes
 $router->post("$api/analytics/track", [$controllers . 'AnalyticsController', 'track']);
-
 $router->get("$api/analytics/admin/overview", [$controllers . 'AnalyticsController', 'getOverview']);
 $router->get("$api/analytics/admin/traffic-sources", [$controllers . 'AnalyticsController', 'getTrafficSources']);
 $router->get("$api/analytics/admin/geolocation", [$controllers . 'AnalyticsController', 'getGeolocation']);
