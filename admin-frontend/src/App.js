@@ -19,7 +19,7 @@ function App() {
     
     if (token && user) {
       setIsAuthenticated(true);
-      setCurrentPage('dashboard'); // Always go to dashboard (stats overview) first
+      setCurrentPage('dashboard'); // Always go to dashboard after auth
       console.log('User authenticated, redirecting to dashboard');
     } else {
       // Clear any invalid session data
@@ -33,8 +33,12 @@ function App() {
 
   const handleLogin = (userData) => {
     console.log('Login successful, setting session');
+    console.log('User data received:', userData);
+    
+    // The token and user are already stored in localStorage by login function
+    // Just update React state
     setIsAuthenticated(true);
-    setCurrentPage('dashboard'); // Always go to dashboard (stats overview) after login
+    setCurrentPage('dashboard'); // Always go to dashboard after login
   };
 
   const handleLogout = () => {
@@ -43,7 +47,6 @@ function App() {
     setCurrentPage('login');
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    // Also clear any other stored data
     sessionStorage.clear();
   };
 

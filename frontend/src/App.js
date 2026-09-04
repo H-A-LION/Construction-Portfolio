@@ -8,8 +8,10 @@ import Projects from './components/Projects';
 import Team from './components/Team';
 import Pages from './components/Pages';
 import Contact from './components/Contact';
+import { usePageTracking } from './hooks/useTracking';
 
 function App() {
+  usePageTracking();
   const homeRef = useRef(null);
   const aboutRef = useRef(null);
   const servicesRef = useRef(null);
