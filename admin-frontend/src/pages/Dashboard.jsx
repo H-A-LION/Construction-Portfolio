@@ -1,4 +1,4 @@
-// admin-frontend/src/pages/Dashboard.jsx (was AdminDashboard.jsx)
+// admin-frontend/src/pages/Dashboard.jsx (formerly AdminDashboard.jsx)
 import React, { useState, useEffect } from 'react';
 import { 
   GoSignOut, 
@@ -9,7 +9,10 @@ import {
   GoTools,
   GoX,
   GoArrowRight,
-  GoClock
+  GoClock,
+  GoStar,
+  GoInfo,
+  GoMail
 } from "react-icons/go";
 import { FaBars } from "react-icons/fa";
 
@@ -24,15 +27,15 @@ const Dashboard = ({ onLogout, onNavigateToContentManager }) => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   useEffect(() => {
+    // Load stats - you can fetch from API later
     const loadStats = async () => {
       try {
-        // You can fetch real stats from your API here
-        // For now using demo data
+        // For now, set some demo stats
         setStats({
           projects: 12,
           team: 8,
           services: 6,
-          totalContent: 6
+          totalContent: 4
         });
       } catch (error) {
         console.error('Error loading stats:', error);
@@ -124,7 +127,7 @@ const Dashboard = ({ onLogout, onNavigateToContentManager }) => {
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Main Content - THIS IS WHAT'S MISSING */}
       <div className="dashboard-main">
         <div className="dashboard-topbar">
           <h2>
@@ -137,7 +140,7 @@ const Dashboard = ({ onLogout, onNavigateToContentManager }) => {
           </button>
         </div>
 
-        {/* Stats Grid - These were hidden before */}
+        {/* Stats Grid */}
         <div className="stats-grid">
           {statCards.map((stat, index) => (
             <div key={index} className="stat-card">
@@ -152,29 +155,37 @@ const Dashboard = ({ onLogout, onNavigateToContentManager }) => {
           ))}
         </div>
 
-        {/* Action Cards - These were hidden before */}
+        {/* Quick Action Cards */}
         <div className="dashboard-actions">
           <div className="action-card" onClick={onNavigateToContentManager}>
             <GoGear size={36} />
             <h4>Content Management</h4>
-            <p>Edit all website content sections including images</p>
+            <p>Edit hero, about, services & contact sections</p>
             <button className="action-btn">
               Go to Editor <GoArrowRight />
             </button>
           </div>
-          <div className="action-card">
-            <GoClock size={36} />
-            <h4>Settings</h4>
-            <p>Configure site settings and preferences</p>
-            <button className="action-btn" disabled>
-              Coming Soon <GoClock />
-            </button>
-          </div>
-          <div className="action-card">
+          <div className="action-card" onClick={onNavigateToContentManager}>
             <GoTasklist size={36} />
             <h4>Projects</h4>
-            <p>Manage project portfolio</p>
-            <button className="action-btn" onClick={onNavigateToContentManager}>
+            <p>Manage your project portfolio</p>
+            <button className="action-btn">
+              Manage <GoArrowRight />
+            </button>
+          </div>
+          <div className="action-card" onClick={onNavigateToContentManager}>
+            <GoPeople size={36} />
+            <h4>Team</h4>
+            <p>Manage team members</p>
+            <button className="action-btn">
+              Manage <GoArrowRight />
+            </button>
+          </div>
+          <div className="action-card" onClick={onNavigateToContentManager}>
+            <GoTools size={36} />
+            <h4>Services</h4>
+            <p>Manage service offerings</p>
+            <button className="action-btn">
               Manage <GoArrowRight />
             </button>
           </div>

@@ -1,5 +1,11 @@
 // admin-frontend/src/styles/App.scss
 @import './styles/App.scss';
+// admin-frontend/src/index.scss
+@import './styles/variables';
+@import './styles/sidebar';
+@import './styles/login';
+@import './styles/dashboard';
+@import './styles/AdminStyles';
 
 // Global responsive settings
 * {
