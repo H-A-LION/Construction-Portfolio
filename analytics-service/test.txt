@@ -1,0 +1,111 @@
+API_KEY="nOXLPI75tR168SIPx93ezYU39kuqSZSFn6tfzPVHnO8="
+PORT="8001"  # Change to your port
+BASE_URL="http://localhost:${PORT}"
+
+echo "=== Testing Analytics Service on Port ${PORT} ==="
+echo "API Key: ${API_KEY}"
+echo ""
+
+# Function to print section
+print_section() {
+    echo ""
+    echo "========================================="
+    echo "$1"
+    echo "========================================="
+}
+
+# 1. Health Check
+print_section "1. Health Check"
+curl -s ${BASE_URL}/health | jq .
+echo ""
+
+# 2. Root Endpoint
+print_section "2. Root Endpoint"
+curl -s ${BASE_URL}/ | jq .
+echo ""
+
+# 3. Track Event
+print_section "3. Track Event (POST)"
+response=$(curl -s -X POST ${BASE_URL}/api/analytics/track \
+  -H "Content-Type: application/json" \
+  -H "x-internal-auth: ${API_KEY}" \
+  -d '{
+    "visitorId": "test-visitor-123",
+    "sessionId": "test-session-456",
+    "eventType": "page_view",
+    "eventData": {"page": "home", "section": "hero"},
+    "url": "http://localhost:3000",
+    "referrer": "http://google.com"
+  }')
+echo "$response" | jq .
+echo ""
+
+# 4. Track another event
+print_section "4. Track Another Event"
+response=$(curl -s -X POST ${BASE_URL}/api/analytics/track \
+  -H "Content-Type: application/json" \
+  -H "x-internal-auth: ${API_KEY}" \
+  -d '{
+    "visitorId": "test-visitor-123",
+    "sessionId": "test-session-456",
+    "eventType": "click",
+    "eventData": {"button": "cta", "section": "hero"},
+    "url": "http://localhost:3000/about",
+    "referrer": "http://localhost:3000"
+  }')
+echo "$response" | jq .
+echo ""
+
+# 5. Track third event with different visitor
+print_section "5. Track Event - New Visitor"
+response=$(curl -s -X POST ${BASE_URL}/api/analytics/track \
+  -H "Content-Type: application/json" \
+  -H "x-internal-auth: ${API_KEY}" \
+  -d '{
+    "visitorId": "test-visitor-456",
+    "sessionId": "test-session-789",
+    "eventType": "page_view",
+    "eventData": {"page": "services"},
+    "url": "http://localhost:3000/services",
+    "referrer": "http://linkedin.com"
+  }')
+echo "$response" | jq .
+echo ""
+
+# 6. Dashboard - Overview
+print_section "6. Dashboard - Overview"
+curl -s -X GET "${BASE_URL}/api/analytics/admin/overview?days=30" \
+  -H "x-internal-auth: ${API_KEY}" | jq .
+echo ""
+
+# 7. Dashboard - Traffic Sources
+print_section "7. Dashboard - Traffic Sources"
+curl -s -X GET "${BASE_URL}/api/analytics/admin/traffic-sources?days=30" \
+  -H "x-internal-auth: ${API_KEY}" | jq .
+echo ""
+
+# 8. Dashboard - Geolocation
+print_section "8. Dashboard - Geolocation"
+curl -s -X GET "${BASE_URL}/api/analytics/admin/geolocation?days=30" \
+  -H "x-internal-auth: ${API_KEY}" | jq .
+echo ""
+
+# 9. Dashboard - Device Breakdown
+print_section "9. Dashboard - Device Breakdown"
+curl -s -X GET "${BASE_URL}/api/analytics/admin/device-breakdown?days=30" \
+  -H "x-internal-auth: ${API_KEY}" | jq .
+echo ""
+
+# 10. Dashboard - Unique vs Returning
+print_section "10. Dashboard - Unique vs Returning"
+curl -s -X GET "${BASE_URL}/api/analytics/admin/unique-vs-returning?days=30" \
+  -H "x-internal-auth: ${API_KEY}" | jq .
+echo ""
+
+# 11. Test with different days parameter
+print_section "11. Dashboard - Overview (7 days)"
+curl -s -X GET "${BASE_URL}/api/analytics/admin/overview?days=7" \
+  -H "x-internal-auth: ${API_KEY}" | jq .
+echo ""
+
+print_section "=== Testing Complete ==="

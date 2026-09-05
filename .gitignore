@@ -17,8 +17,15 @@
 
 # analytics
 /analytics-service/web-fingerprint-analytic
+analytics-service/app/__pycache__/
+/analytics-service/app/config/__pycache__/
+/analytics-service/app/models/__pycache__/
+/analytics-service/app/routes/__pycache__/
+/analytics-service/app/services/__pycache__/
+/analytics-service/.env
 
 # Security Reports
 /security-reports
 
 notes.txt
+

@@ -22,6 +22,10 @@ app.include_router(dashboard.router, prefix="/api/analytics/admin", tags=["dashb
 async def root():
     return {"service": "Analytics Microservice", "version": "1.0.0"}
 
+@app.get("/health")
+async def health():
+    return {"status": "healthy", "service": "analytics"}
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=settings.SERVICE_PORT)
